@@ -1,0 +1,28 @@
+{
+  "name": "plurix-procurement-360",
+  "version": "1.0.0",
+  "type": "module",
+  "author": "Plurix",
+  "description": "Plataforma interna de Gestão de Fornecedores, Homologação e Cotações (RFQ) — Plurix",
+  "main": "src/server.ts",
+  "scripts": {
+    "dev": "node --watch --watch-path=./src --import=tsx ./src/server.ts",
+    "start": "node --import=tsx ./src/server.ts",
+    "build": "npx esbuild api/index.ts --bundle --platform=node --format=esm --outfile=api/index.js --external:express",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import=tsx --test test/**/*.test.ts"
+  },
+  "license": "ISC",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.7.1",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.2"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

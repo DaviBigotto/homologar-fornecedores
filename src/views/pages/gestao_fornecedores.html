@@ -1,0 +1,3049 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plurix · Procurement 360</title>
+<link rel="icon" href="/public/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/public/fonts/inter-latin-wght.woff2) format("woff2");
+}
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+:root {
+  --bg-page: #F4F6FB;
+  --surface: #FFFFFF;
+  --surface-subtle: #F8FAFC;
+  --navy-sidebar: #050C38;
+  --navy-hero: #06104A;
+  --navy-primary: #0B1B69;
+  --navy-primary-hover: #13288C;
+  --blue-accent: #3B5BDB;
+  --blue-soft: #EDF2FF;
+  --text-main: #0B1536;
+  --text-secondary: #5A6882;
+  --text-muted: #8492A6;
+  --border-light: #E6ECF5;
+  --border-input: #DCE4F0;
+  --ok-bg: #E6F8EF;
+  --ok-text: #0D7A49;
+  --ok-dot: #12A15E;
+  --warn-bg: #FFF6E0;
+  --warn-text: #9C5700;
+  --warn-dot: #E68A00;
+  --bad-bg: #FFEBEB;
+  --bad-text: #C92A2A;
+  --bad-dot: #E03131;
+  --info-bg: #E8EEFF;
+  --info-text: #1E40AF;
+  --info-dot: #3B5BDB;
+  --f-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --f-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --shadow-card: 0 2px 12px rgba(11, 21, 54, 0.035), 0 0 0 1px #E6ECF5;
+  --shadow-topbar: 0 4px 20px rgba(11, 21, 54, 0.045), 0 0 0 1px #E6ECF5;
+  --shadow-modal: 0 24px 64px rgba(5, 12, 56, 0.22), 0 0 0 1px #E6ECF5;
+}
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+body {
+  font-family: var(--f-sans);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--text-main);
+  background: var(--bg-page);
+  font-feature-settings: "tnum" 1, "cv11" 1;
+  min-height: 100vh;
+}
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+.hidden {
+  display: none !important;
+}
+/* ── Shell Principal: Sidebar Navy + Área de Conteúdo ── */
+.p360-shell {
+  display: flex;
+  min-height: 100vh;
+}
+.p360-sidebar {
+  width: 248px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, #060F42 0%, #030829 100%);
+  color: #FFFFFF;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  z-index: 40;
+}
+.p360-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 8px 6px;
+  text-decoration: none;
+  color: #FFFFFF;
+}
+.p360-brand-logo {
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: #FFFFFF;
+  line-height: 1;
+}
+.p360-brand-sep {
+  width: 1px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.18);
+}
+.p360-brand-sub {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.56);
+  white-space: nowrap;
+}
+.p360-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+.p360-nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+}
+.p360-nav-group-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.88);
+}
+.p360-nav-group-title svg,
+.p360-nav-item svg {
+  width: 16px;
+  height: 16px;
+  color: rgba(255, 255, 255, 0.62);
+  flex-shrink: 0;
+}
+.p360-nav-children {
+  position: relative;
+  margin-left: 19px;
+  padding-left: 12px;
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.p360-nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 14px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 13.5px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+.p360-nav-item:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.06);
+}
+.p360-nav-item.active {
+  color: #FFFFFF;
+  font-weight: 600;
+  background: linear-gradient(90deg, rgba(49, 84, 214, 0.34) 0%, rgba(28, 52, 148, 0.18) 100%);
+  border-color: rgba(110, 145, 255, 0.26);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+.p360-nav-item.active::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 3px;
+  background: #FFFFFF;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+.p360-nav-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.85);
+}
+/* ── Área Principal e Topbar Flutuante ── */
+.p360-main-wrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 32px 48px;
+}
+.p360-topbar {
+  position: sticky;
+  top: 16px;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.94);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  backdrop-filter: saturate(180%) blur(14px);
+  border-radius: 16px;
+  box-shadow: var(--shadow-topbar);
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.p360-topbar::before {
+  content: "";
+  position: absolute;
+  top: -16px;
+  left: -8px;
+  right: -8px;
+  height: 16px;
+  background: linear-gradient(180deg, var(--bg-page) 60%, rgba(244, 246, 251, 0) 100%);
+  pointer-events: none;
+}
+.p360-inv-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.p360-inv-picker:hover {
+  background: var(--surface-subtle);
+}
+.p360-inv-picker svg {
+  width: 16px;
+  height: 16px;
+  color: var(--navy-primary);
+}
+.p360-inv-picker select {
+  border: none;
+  background: transparent;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-main);
+  cursor: pointer;
+  outline: none;
+  padding-right: 4px;
+}
+.p360-search-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: min(440px, 100%);
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 11px;
+  background: #F4F7FC;
+  border: 1px solid #E5ECF6;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+.p360-search-top:focus-within {
+  background: #FFFFFF;
+  border-color: var(--blue-accent);
+  box-shadow: 0 0 0 3px rgba(59, 91, 219, 0.12);
+}
+.p360-search-top svg {
+  width: 15px;
+  height: 15px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.p360-search-top input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 13.5px;
+  color: var(--text-main);
+}
+.p360-search-top input::placeholder {
+  color: var(--text-muted);
+}
+.p360-user-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.p360-user-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 6px;
+}
+.p360-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #E8EEFF;
+  color: var(--navy-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+.p360-user-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.p360-user-info b {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+.p360-user-info span {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+/* ── Hero Banner do Cockpit (Home) ── */
+.p360-hero {
+  position: relative;
+  border-radius: 22px;
+  padding: 28px 30px 26px;
+  color: #FFFFFF;
+  background:
+    radial-gradient(circle at 75% 20%, rgba(66, 112, 255, 0.22) 0%, transparent 52%),
+    radial-gradient(circle at 30% 85%, rgba(35, 72, 204, 0.25) 0%, transparent 48%),
+    linear-gradient(135deg, #050E42 0%, #091863 55%, #050C38 100%);
+  box-shadow: 0 12px 32px rgba(6, 16, 74, 0.16);
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+.p360-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.11) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.45;
+  pointer-events: none;
+}
+.p360-hero-top {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.p360-hero-date {
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: 4px;
+}
+.p360-hero-title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+.p360-hero-sub {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.68);
+  margin-top: 3px;
+}
+.p360-hero-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.p360-hero-pill:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+.p360-hero-kpis {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.p360-hero-card {
+  background: rgba(16, 33, 102, 0.62);
+  border: 1px solid rgba(122, 156, 255, 0.16);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 18px 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: pointer;
+  text-align: left;
+  color: #FFFFFF;
+  transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+}
+.p360-hero-card:hover {
+  transform: translateY(-2px);
+  background: rgba(22, 44, 128, 0.72);
+  border-color: rgba(145, 175, 255, 0.34);
+}
+.p360-hero-card-label {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.72);
+}
+.p360-hero-card-val {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.p360-hero-card-val b {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.p360-hero-card-val span {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.68);
+}
+.p360-hero-card-val span.danger {
+  color: #FF7878;
+  font-weight: 600;
+}
+.p360-hero-card-val span.warn {
+  color: #FBBF24;
+  font-weight: 600;
+}
+.p360-hero-bar {
+  height: 3px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+  margin-top: auto;
+}
+.p360-hero-bar i {
+  display: block;
+  height: 100%;
+  border-radius: 99px;
+  background: #4C6EF5;
+}
+.p360-hero-bar i.danger {
+  background: #FF6B6B;
+}
+.p360-hero-bar i.warn {
+  background: #F59F00;
+}
+/* ── Grid da Home (Precisa de atenção + Cotações em andamento) ── */
+.p360-home-grid {
+  display: grid;
+  grid-template-columns: 1.12fr 0.88fr;
+  gap: 22px;
+  align-items: start;
+}
+.p360-card {
+  background: var(--surface);
+  border-radius: 18px;
+  box-shadow: var(--shadow-card);
+  padding: 22px 24px;
+}
+.p360-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.p360-card-title {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-main);
+}
+.p360-card-title span {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+/* Lista "Precisa de atenção" */
+.p360-attn-list {
+  display: flex;
+  flex-direction: column;
+}
+.p360-attn-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid #EEF2F8;
+}
+.p360-attn-row:last-child {
+  border-bottom: none;
+  padding-bottom: 2px;
+}
+.p360-attn-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+.p360-attn-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.p360-attn-icon.bad {
+  background: #FFF0F0;
+  color: #E03131;
+}
+.p360-attn-icon.att {
+  background: #FFF8E6;
+  color: #D97706;
+}
+.p360-attn-icon svg {
+  width: 16px;
+  height: 16px;
+}
+.p360-attn-info {
+  min-width: 0;
+}
+.p360-attn-name {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.p360-attn-name b {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-main);
+  cursor: pointer;
+}
+.p360-attn-name b:hover {
+  color: var(--blue-accent);
+}
+.p360-attn-name code {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.p360-attn-desc {
+  font-size: 13px;
+  font-weight: 500;
+  color: #D93838;
+  margin-top: 2px;
+}
+.p360-attn-desc.att {
+  color: #B45309;
+}
+/* Lista "Cotações em andamento" com barra de timeline */
+.p360-rfq-list {
+  display: flex;
+  flex-direction: column;
+}
+.p360-rfq-item {
+  padding: 15px 0;
+  border-bottom: 1px solid #EEF2F8;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.p360-rfq-item:last-child {
+  border-bottom: none;
+  padding-bottom: 2px;
+}
+.p360-rfq-item:hover .p360-rfq-title b {
+  color: var(--blue-accent);
+}
+.p360-rfq-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+.p360-rfq-title {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+.p360-rfq-title code {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+.p360-rfq-title b {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.p360-rfq-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.p360-rfq-dots i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #D5DFEE;
+  display: inline-block;
+}
+.p360-rfq-dots i.on {
+  background: #2B4ACB;
+}
+.p360-rfq-inv {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  margin-bottom: 10px;
+}
+.p360-rfq-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.p360-rfq-track-wrap {
+  flex: 1;
+  min-width: 0;
+}
+.p360-rfq-track {
+  position: relative;
+  height: 3px;
+  border-radius: 99px;
+  background: #E6ECF5;
+}
+.p360-rfq-track i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 99px;
+  background: #2B4ACB;
+}
+.p360-rfq-track i.warn {
+  background: #B7791F;
+}
+.p360-rfq-track i.done {
+  background: #94A3B8;
+}
+.p360-rfq-track em {
+  position: absolute;
+  top: -3px;
+  width: 2px;
+  height: 9px;
+  background: #B7791F;
+}
+.p360-rfq-dates {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11.5px;
+  color: var(--text-muted);
+  margin-top: 5px;
+}
+.p360-rfq-right-stat {
+  font-size: 12.5px;
+  font-weight: 600;
+  flex-shrink: 0;
+  color: var(--text-secondary);
+}
+.p360-rfq-right-stat.warn {
+  color: #B45309;
+}
+/* ── Cabeçalhos de Página Interna (Breadcrumb + Título + CTA) ── */
+.p360-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.p360-breadcrumb {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.p360-breadcrumb button {
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.p360-breadcrumb button:hover {
+  color: var(--navy-primary);
+  text-decoration: underline;
+}
+.p360-page-title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-main);
+  line-height: 1.15;
+}
+.p360-page-count {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+/* ── Botões Clean ── */
+.p360-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border-input);
+  background: #FFFFFF;
+  color: var(--text-main);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+.p360-btn:hover:not(:disabled) {
+  background: #F8FAFC;
+  border-color: #C5D2E8;
+}
+.p360-btn.primary {
+  height: 40px;
+  padding: 0 18px;
+  background: var(--navy-primary);
+  border-color: var(--navy-primary);
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(11, 27, 105, 0.18);
+}
+.p360-btn.primary:hover:not(:disabled) {
+  background: var(--navy-primary-hover);
+  border-color: var(--navy-primary-hover);
+}
+.p360-btn.sm {
+  height: 32px;
+  padding: 0 13px;
+  font-size: 12.5px;
+  border-radius: 9px;
+}
+.p360-btn svg {
+  width: 15px;
+  height: 15px;
+}
+/* ── Tabs em Pílula Suave (como na tela de Homologação) ── */
+.p360-tabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.p360-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 15px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.p360-tab:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.6);
+}
+.p360-tab.active {
+  background: #FFFFFF;
+  border-color: var(--border-light);
+  color: var(--text-main);
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(11, 21, 54, 0.05);
+}
+.p360-tab span {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+/* ── Container de Tabela e Barra de Filtros Interna ── */
+.p360-table-card {
+  background: var(--surface);
+  border-radius: 18px;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.p360-filters-bar {
+  padding: 18px 22px;
+  border-bottom: 1px solid #EEF2F8;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.p360-search-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 38px;
+  padding: 0 13px;
+  border-radius: 10px;
+  background: #F6F8FC;
+  border: 1px solid var(--border-input);
+  min-width: 280px;
+  flex: 1 1 280px;
+  max-width: 440px;
+}
+.p360-search-field:focus-within {
+  background: #FFFFFF;
+  border-color: var(--blue-accent);
+}
+.p360-search-field svg {
+  width: 15px;
+  height: 15px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.p360-search-field input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 13px;
+}
+.p360-select {
+  height: 38px;
+  padding: 0 32px 0 13px;
+  border-radius: 10px;
+  border: 1px solid var(--border-input);
+  background-color: #FFFFFF;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235A6882' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 11px center;
+  appearance: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-main);
+  cursor: pointer;
+  outline: none;
+}
+.p360-select:hover {
+  border-color: #C2D0E6;
+}
+.p360-filter-label {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-left: 4px;
+}
+/* ── Tabelas Limpas e Arejadas ── */
+.p360-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+.p360-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+.p360-table thead th {
+  text-align: left;
+  padding: 13px 22px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-bottom: 1px solid #EEF2F8;
+  white-space: nowrap;
+  background: #FFFFFF;
+}
+.p360-table thead th.right,
+.p360-table tbody td.right {
+  text-align: right;
+}
+.p360-table tbody tr {
+  border-bottom: 1px solid #F1F5FA;
+  transition: background 0.12s;
+}
+.p360-table tbody tr:last-child {
+  border-bottom: none;
+}
+.p360-table tbody tr.clickable {
+  cursor: pointer;
+}
+.p360-table tbody tr.clickable:hover {
+  background: #F8FAFF;
+}
+.p360-table tbody td {
+  padding: 16px 22px;
+  vertical-align: middle;
+  color: var(--text-main);
+}
+.p360-cell-title {
+  font-weight: 600;
+  color: var(--text-main);
+  font-size: 13.5px;
+}
+.p360-cell-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.p360-mono {
+  font-family: var(--f-mono);
+  font-size: 12.5px;
+  color: var(--text-secondary);
+}
+/* ── Badges de Escopo (Escudo + Investida + Categoria) e Situação ── */
+.p360-scope-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 8px;
+  border: 1px solid #DCE5F5;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 1;
+  background: #FFFFFF;
+}
+.p360-scope-inv {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 9px;
+  background: #ECFDF5;
+  color: #0D7A49;
+  font-weight: 600;
+}
+.p360-scope-inv.blue {
+  background: #EEF2FF;
+  color: #2B4ACB;
+}
+.p360-scope-inv.neutral {
+  background: #F1F5F9;
+  color: #334155;
+}
+.p360-scope-inv svg {
+  width: 12px;
+  height: 12px;
+}
+.p360-scope-cat {
+  padding: 5px 9px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  background: #FFFFFF;
+}
+.p360-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.p360-badge i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.p360-badge.ok {
+  background: var(--ok-bg);
+  color: var(--ok-text);
+}
+.p360-badge.ok i { background: var(--ok-dot); }
+.p360-badge.warn {
+  background: var(--warn-bg);
+  color: var(--warn-text);
+}
+.p360-badge.warn i { background: var(--warn-dot); }
+.p360-badge.bad {
+  background: var(--bad-bg);
+  color: var(--bad-text);
+}
+.p360-badge.bad i { background: var(--bad-dot); }
+.p360-badge.info {
+  background: var(--info-bg);
+  color: var(--info-text);
+}
+.p360-badge.info i { background: var(--info-dot); }
+.p360-badge.neutral {
+  background: #F1F5F9;
+  color: #475569;
+}
+.p360-badge.neutral i { background: #64748B; }
+.p360-doc-alert-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 7px;
+  border-radius: 6px;
+  background: #FFF0F0;
+  color: #D93838;
+  font-size: 11.5px;
+  font-weight: 600;
+  margin-left: 6px;
+}
+.p360-doc-alert-pill.warn {
+  background: #FFF8E6;
+  color: #B45309;
+}
+/* ── KPIs Internos Clean (Telas de Detalhe e Indicadores) ── */
+.p360-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.p360-kpi-box {
+  background: var(--surface);
+  border-radius: 16px;
+  box-shadow: var(--shadow-card);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.p360-kpi-box span {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.p360-kpi-box b {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-main);
+}
+.p360-kpi-box small {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+/* ── Checklist Visual de Homologação ── */
+.p360-check-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+.p360-check-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+  background: var(--surface-subtle);
+}
+.p360-check-mark {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.p360-check-mark.ok { background: var(--ok-bg); color: var(--ok-text); }
+.p360-check-mark.att { background: var(--warn-bg); color: var(--warn-text); }
+.p360-check-mark.bad { background: var(--bad-bg); color: var(--bad-text); }
+.p360-check-mark.pendente { background: #E2E8F0; color: #475569; }
+/* ── Campos de Formulário, KV Grid e Modais Clean ── */
+.p360-kv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+.p360-kv {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--surface-subtle);
+  border: 1px solid #EEF2F8;
+}
+.p360-kv span {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+.p360-kv b {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+.p360-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.p360-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.p360-input,
+.p360-textarea {
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border-input);
+  background: #FFFFFF;
+  font-size: 13.5px;
+  color: var(--text-main);
+  outline: none;
+}
+.p360-textarea {
+  height: auto;
+  min-height: 76px;
+  padding: 10px 12px;
+  resize: vertical;
+}
+.p360-input:focus,
+.p360-textarea:focus {
+  border-color: var(--blue-accent);
+  box-shadow: 0 0 0 3px rgba(59, 91, 219, 0.1);
+}
+/* Modal & Backdrop */
+.p360-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 12, 56, 0.42);
+  backdrop-filter: blur(3px);
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.p360-modal {
+  width: min(560px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #FFFFFF;
+  border-radius: 20px;
+  box-shadow: var(--shadow-modal);
+  padding: 24px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.p360-modal.wide {
+  width: min(860px, 100%);
+}
+/* Stepper */
+.p360-stepper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #EEF2F8;
+}
+.p360-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 99px;
+  border: 1px solid var(--border-light);
+  background: #FFFFFF;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+.p360-step i {
+  font-style: normal;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #EEF2F8;
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+.p360-step.active {
+  background: var(--navy-primary);
+  border-color: var(--navy-primary);
+  color: #FFFFFF;
+  font-weight: 600;
+}
+.p360-step.active i {
+  background: #FFFFFF;
+  color: var(--navy-primary);
+}
+.p360-step.done {
+  border-color: #A7F3D0;
+  background: #F0FDF4;
+  color: var(--ok-text);
+}
+.p360-step.done i {
+  background: var(--ok-dot);
+  color: #FFFFFF;
+}
+/* Mapa Comparativo Clean */
+.p360-comp-best {
+  background: #F2FBF6 !important;
+}
+.p360-comp-winner {
+  box-shadow: inset 0 0 0 2px var(--blue-accent);
+  background: #F5F8FF !important;
+}
+/* Toast */
+.p360-toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 200;
+  background: #0B1536;
+  color: #FFFFFF;
+  padding: 12px 18px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(5, 12, 56, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+}
+@media (max-width: 1100px) {
+  .p360-hero-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .p360-home-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 820px) {
+  .p360-shell {
+    flex-direction: column;
+  }
+  .p360-sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    padding: 16px;
+  }
+  .p360-main-wrap {
+    padding: 14px 16px 32px;
+  }
+  .p360-topbar {
+    flex-wrap: wrap;
+  }
+  .p360-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<div class="p360-shell">
+  <!-- Barra Lateral Navy Plurix Procurement 360 -->
+  <aside class="p360-sidebar" aria-label="Navegação principal">
+    <a href="#inicio" class="p360-brand" data-nav="inicio">
+      <span class="p360-brand-logo">Plurix</span>
+      <span class="p360-brand-sep"></span>
+      <span class="p360-brand-sub">Procurement 360</span>
+    </a>
+    <nav class="p360-nav" id="sidebarNav"></nav>
+  </aside>
+  <!-- Área Principal -->
+  <div class="p360-main-wrap">
+    <!-- Topbar Flutuante Clean -->
+    <header class="p360-topbar">
+      <label class="p360-inv-picker" title="Filtrar por investida da Plurix">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1.5-5h15L21 9M4.5 9v11h15V9M3 9h18M9.5 20v-6h5v6"/></svg>
+        <select id="selInvestidaGlobal" aria-label="Selecionar investida">
+          <option value="PLX">Todas as investidas</option>
+          <option value="AMG">Amigão Supermercados (AMG)</option>
+          <option value="BOA">Boa Supermercados (BOA)</option>
+          <option value="AVE">Supermercados Avenida (AVE)</option>
+          <option value="PRN">Paraná Supermercados (PRN)</option>
+          <option value="SPO">Superpão (SPO)</option>
+          <option value="JPY">Japi Mercados (JPY)</option>
+        </select>
+      </label>
+      <label class="p360-search-top">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="inpBuscaGlobal" placeholder="Buscar fornecedor, CNPJ ou cotação" aria-label="Buscar fornecedor, CNPJ ou cotação">
+      </label>
+      <div class="p360-user-area">
+        <button type="button" class="p360-btn sm" id="btnPortalTop" title="Visualizar o Portal externo do Fornecedor">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Portal do Fornecedor
+        </button>
+        <div class="p360-user-pill">
+          <span class="p360-avatar">A</span>
+          <div class="p360-user-info">
+            <b>Administrador</b>
+            <span>Administrador</span>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- Conteúdo Dinâmico -->
+    <main id="appMain"></main>
+  </div>
+</div>
+<div id="modalRoot"></div>
+<div id="toastEl" class="p360-toast hidden"></div>
+<script>
+;(function () {
+  'use strict'
+  var $ = function (id) { return document.getElementById(id) }
+  var esc = function (s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+    })
+  }
+  var BASE = location.pathname.replace(/\/+$/, '')
+  if (!BASE || BASE === '') BASE = '/gestao-fornecedores'
+  var SVG_SHIELD = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>'
+  var SVG_SEARCH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>'
+  var SVG_ALERT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+  var SVG_CLOCK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>'
+  var NOME_INVESTIDA = {
+    PLX: 'Plurix Holding',
+    AMG: 'Amigão Supermercados',
+    BOA: 'Boa Supermercados',
+    AVE: 'Supermercados Avenida',
+    PRN: 'Paraná Supermercados',
+    SPO: 'Superpão',
+    JPY: 'Japi Mercados'
+  }
+  var S = {
+    dados: null,
+    investida: 'PLX',
+    buscaGlobal: '',
+    tela: 'inicio',
+    subTela: null, // 'fornecedor' | 'homologacao' | 'cotacao' | 'nova-cotacao'
+    fornecedorId: 'FOR-001',
+    abaFornecedor: 'visao-geral',
+    homologacaoId: 'HOM-2026-041',
+    abaHomologacao: 'na_fila',
+    cotacaoId: 'COT-0142',
+    abaCotacao: 'visao-geral',
+    fBase: { busca: '', categoria: '', uf: '', situacao: '', bloqueio: '', investidaElegivel: '' },
+    fHom: { busca: '', investida: '', categoria: '', responsavel: '', tempo: '' },
+    fCot: { busca: '', status: '', categoria: '', comprador: '' },
+    wizard: {
+      etapa: 1,
+      titulo: '',
+      descricao: '',
+      categoria: 'Embalagens e Insumos',
+      subcategoria: 'Químicos e Higienização',
+      investida: 'AMG',
+      comprador: 'Mariana Costa',
+      prazo: '28/11/2026 18:00',
+      pagamentoPadrao: '45 DDL via boleto bancário PJ',
+      tipoFretePreferencial: 'CIF incluso nos CDs Plurix',
+      localEntrega: 'CD Maringá (AMG) e CD Jundiaí (BOA)',
+      impostosRegra: 'ICMS, PIS e COFINS inclusos no preço líquido',
+      validadeMinimaDias: 30,
+      observacoesGerais: 'Certidões negativas obrigatórias vigentes para emissão do pedido.',
+      itens: [
+        { codigo: 'INS-501', descricao: 'Bobina Filme PVC Esticável Alimentar 400mm x 1000m', quantidade: 450, unidade: 'RL', especificacao: 'Virgem atóxico para padaria e frios', precoReferenciaUnit: 84.00 },
+        { codigo: 'INS-508', descricao: 'Bandeja EPS Branca Rasa B2 Cx c/ 400 un', quantidade: 600, unidade: 'CX', especificacao: 'Alta resistência para açougue', precoReferenciaUnit: 62.50 }
+      ],
+      filtroCatFornecedor: '',
+      fornecedorIds: ['FOR-003', 'FOR-001', 'FOR-002']
+    }
+  }
+  function fmtMoeda(v) {
+    if (v == null || isNaN(v)) return '—'
+    return Number(v).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+  }
+  function fmtMoedaCurta(v) {
+    if (v == null || isNaN(v)) return '—'
+    var n = Number(v)
+    if (Math.abs(n) >= 1e6) return 'R$ ' + (n / 1e6).toFixed(2).replace('.', ',') + 'M'
+    if (Math.abs(n) >= 1e3) return 'R$ ' + (n / 1e3).toFixed(1).replace('.', ',') + 'k'
+    return fmtMoeda(n)
+  }
+  function toast(msg) {
+    var el = $('toastEl')
+    if (!el) return
+    el.textContent = msg
+    el.classList.remove('hidden')
+    clearTimeout(el.__t)
+    el.__t = setTimeout(function () { el.classList.add('hidden') }, 3200)
+  }
+  async function api(caminho, opts) {
+    var r = await fetch(BASE + caminho, opts)
+    var j = await r.json()
+    if (!r.ok || !j.success) throw new Error(j.error || 'Erro ao processar solicitação.')
+    return j.data
+  }
+  async function carregar(silencioso) {
+    if (!silencioso) {
+      $('appMain').innerHTML = '<div class="p360-card" style="text-align:center;padding:64px 24px;color:var(--text-muted)">Carregando central de trabalho Plurix...</div>'
+    }
+    var q = S.investida && S.investida !== 'PLX' ? '?investida=' + encodeURIComponent(S.investida) : ''
+    S.dados = await api('/api/estado' + q)
+    render()
+  }
+  function badgeStatusFornecedor(st) {
+    var m = {
+      'Homologado': ['ok', 'Completo'],
+      'Em análise': ['info', 'Em análise'],
+      'Aguardando análise': ['warn', 'Aguardando análise'],
+      'Pendente fornecedor': ['warn', 'Devolvida'],
+      'Convidado': ['neutral', 'Convidado'],
+      'Cadastro em andamento': ['neutral', 'Em cadastro'],
+      'Homologação vencida': ['bad', 'Vencida'],
+      'Bloqueado': ['bad', 'Bloqueado'],
+      'Reprovado': ['bad', 'Reprovado']
+    }[st] || ['neutral', st]
+    return '<span class="p360-badge ' + m[0] + '"><i></i>' + esc(m[1]) + '</span>'
+  }
+  function badgeStatusDoc(st) {
+    var m = {
+      'valido': ['ok', 'Válido'],
+      'proximo_vencimento': ['warn', 'Vencendo em 30d'],
+      'vencido': ['bad', 'Vencido'],
+      'pendente': ['neutral', 'Pendente'],
+      'em_analise': ['info', 'Em análise'],
+      'rejeitado': ['bad', 'Rejeitado']
+    }[st] || ['neutral', st]
+    return '<span class="p360-badge ' + m[0] + '"><i></i>' + esc(m[1]) + '</span>'
+  }
+  function badgeStatusCotacao(st) {
+    var m = {
+      'Aberta': ['info', 'aberta'],
+      'Recebendo propostas': ['info', 'recebendo propostas'],
+      'Em análise': ['info', 'em análise'],
+      'Em negociação': ['warn', 'em negociação'],
+      'Convite programado': ['neutral', 'programada'],
+      'Rascunho': ['neutral', 'rascunho'],
+      'Encerrada': ['ok', 'encerrada'],
+      'Cancelada': ['bad', 'cancelada']
+    }[st] || ['neutral', st]
+    return '<span class="p360-badge ' + m[0] + '"><i></i>' + esc(m[1]) + '</span>'
+  }
+  function renderSidebar() {
+    var t = S.tela
+    var sub = S.subTela
+    var isBase = (t === 'base' && !sub) || sub === 'fornecedor'
+    var isHom = (t === 'homologacoes' && !sub) || sub === 'homologacao'
+    var isCot = (t === 'cotacoes' && !sub) || sub === 'cotacao' || sub === 'nova-cotacao'
+    $('sidebarNav').innerHTML =
+      '<button type="button" class="p360-nav-item ' + (t === 'inicio' && !sub ? 'active' : '') + '" data-nav="inicio">' +
+        '<span style="display:flex;align-items:center;gap:10px">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 10h18"/></svg>' +
+          'Início' +
+        '</span>' +
+      '</button>' +
+      '<div class="p360-nav-group">' +
+        '<div class="p360-nav-group-title">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg>' +
+          'Fornecedores' +
+        '</div>' +
+        '<div class="p360-nav-children">' +
+          '<button type="button" class="p360-nav-item ' + (isBase ? 'active' : '') + '" data-nav="base"><span>Base</span></button>' +
+          '<button type="button" class="p360-nav-item ' + (isHom ? 'active' : '') + '" data-nav="homologacoes"><span>Homologação</span></button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="p360-nav-group">' +
+        '<div class="p360-nav-group-title">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>' +
+          'Sourcing' +
+        '</div>' +
+        '<div class="p360-nav-children">' +
+          '<button type="button" class="p360-nav-item ' + (isCot ? 'active' : '') + '" data-nav="cotacoes"><span>Cotações</span></button>' +
+          '<button type="button" class="p360-nav-item ' + (t === 'mapa' && !sub ? 'active' : '') + '" data-nav="mapa"><span>Mapa comparativo</span></button>' +
+        '</div>' +
+      '</div>' +
+      '<button type="button" class="p360-nav-item ' + (t === 'indicadores' && !sub ? 'active' : '') + '" data-nav="indicadores" style="margin-top:4px">' +
+        '<span style="display:flex;align-items:center;gap:10px">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 4 5-6"/></svg>' +
+          'Indicadores' +
+        '</span>' +
+      '</button>' +
+      '<div class="p360-nav-group">' +
+        '<div class="p360-nav-group-title">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>' +
+          'Configurações' +
+        '</div>' +
+        '<div class="p360-nav-children">' +
+          '<button type="button" class="p360-nav-item ' + (t === 'investidas' && !sub ? 'active' : '') + '" data-nav="investidas"><span>Investidas</span></button>' +
+          '<button type="button" class="p360-nav-item ' + (t === 'categorias' && !sub ? 'active' : '') + '" data-nav="categorias"><span>Categorias</span></button>' +
+          '<button type="button" class="p360-nav-item ' + (t === 'documentos' && !sub ? 'active' : '') + '" data-nav="documentos"><span>Tipos de documento</span></button>' +
+          '<button type="button" class="p360-nav-item ' + (t === 'regras' && !sub ? 'active' : '') + '" data-nav="regras"><span>Regras de homologação</span></button>' +
+          '<button type="button" class="p360-nav-item ' + (t === 'usuarios' && !sub ? 'active' : '') + '" data-nav="usuarios"><span>Usuários</span></button>' +
+        '</div>' +
+      '</div>'
+  }
+  function render() {
+    if (!S.dados) return
+    renderSidebar()
+    var html = ''
+    if (S.subTela === 'fornecedor') html = viewDetalheFornecedor()
+    else if (S.subTela === 'homologacao') html = viewMesaHomologacao()
+    else if (S.subTela === 'cotacao') html = viewDetalheCotacao()
+    else if (S.subTela === 'nova-cotacao') html = viewWizardCotacao()
+    else {
+      switch (S.tela) {
+        case 'inicio': html = viewHome(); break
+        case 'base': html = viewBaseFornecedores(); break
+        case 'homologacoes': html = viewHomologacoes(); break
+        case 'cotacoes': html = viewCotacoes(); break
+        case 'mapa': html = viewMapaComparativo(); break
+        case 'indicadores': html = viewIndicadores(); break
+        case 'investidas': html = viewInvestidas(); break
+        case 'categorias': html = viewCategorias(); break
+        case 'documentos': html = viewTiposDocumento(); break
+        case 'regras': html = viewRegrasHomologacao(); break
+        case 'usuarios': html = viewUsuarios(); break
+        default: html = viewHome()
+      }
+    }
+    $('appMain').innerHTML = html
+  }
+  // ═══════════════════════════════════════════════════════════════════════════════
+  // 1. HOME / CENTRAL DE TRABALHO (HERO NAVY + 2 COLUNAS CLEAN)
+  // ═══════════════════════════════════════════════════════════════════════════════
+  function viewHome() {
+    var d = S.dados
+    var k = d.kpis
+    var heroHtml =
+      '<section class="p360-hero">' +
+        '<div class="p360-hero-top">' +
+          '<div>' +
+            '<div class="p360-hero-date">Segunda-feira, 16 de novembro</div>' +
+            '<h1 class="p360-hero-title">Bom dia, Administrador</h1>' +
+            '<div class="p360-hero-sub">Central de trabalho</div>' +
+          '</div>' +
+          '<button type="button" class="p360-hero-pill" data-open-sub="nova-cotacao">' +
+            '+ Nova cotação (RFQ)' +
+          '</button>' +
+        '</div>' +
+        '<div class="p360-hero-kpis">' +
+          '<button type="button" class="p360-hero-card" data-nav="homologacoes">' +
+            '<span class="p360-hero-card-label">Homologações aguardando análise</span>' +
+            '<div class="p360-hero-card-val"><b>' + k.homologAguardando + '</b><span>em dia</span></div>' +
+            '<div class="p360-hero-bar"><i style="width:35%"></i></div>' +
+          '</button>' +
+          '<button type="button" class="p360-hero-card" data-nav="base">' +
+            '<span class="p360-hero-card-label">Documentos vencendo em 30 dias</span>' +
+            '<div class="p360-hero-card-val"><b>' + k.docsVencendo30d + '</b><span class="danger">+ ' + k.docsVencidos + ' vencidos</span></div>' +
+            '<div class="p360-hero-bar"><i class="danger" style="width:68%"></i></div>' +
+          '</button>' +
+          '<button type="button" class="p360-hero-card" data-nav="cotacoes">' +
+            '<span class="p360-hero-card-label">Cotações abertas</span>' +
+            '<div class="p360-hero-card-val"><b>' + k.cotacoesAbertas + '</b><span>' + k.respostasRecebidasAbertas + '/' + k.convitesTotaisAbertos + ' respostas</span></div>' +
+            '<div class="p360-hero-bar"><i style="width:52%"></i></div>' +
+          '</button>' +
+          '<button type="button" class="p360-hero-card" data-nav="cotacoes">' +
+            '<span class="p360-hero-card-label">Encerrando em 48 h</span>' +
+            '<div class="p360-hero-card-val"><b>' + k.cotacoesEncerrando48h + '</b><span class="warn">1 em risco</span></div>' +
+            '<div class="p360-hero-bar"><i class="warn" style="width:50%"></i></div>' +
+          '</button>' +
+        '</div>' +
+      '</section>'
+    var alertas = d.alertasAtencao || []
+    var attnRows = alertas.map(function (a) {
+      var isDoc = a.tipo === 'documento_vencido'
+      return '<div class="p360-attn-row">' +
+        '<div class="p360-attn-left">' +
+          '<div class="p360-attn-icon ' + a.criticidade + '">' + (isDoc ? SVG_ALERT : SVG_CLOCK) + '</div>' +
+          '<div class="p360-attn-info">' +
+            '<div class="p360-attn-name">' +
+              '<b data-alerta-mod="' + a.alvoModulo + '" data-alerta-id="' + a.alvoId + '">' + esc(a.fornecedorOuRef) + '</b>' +
+              '<code>' + esc(a.subtitulo) + '</code>' +
+            '</div>' +
+            '<div class="p360-attn-desc ' + (a.criticidade === 'att' ? 'att' : '') + '">' + esc(a.detalhe) + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<button type="button" class="p360-btn sm" data-alerta-mod="' + a.alvoModulo + '" data-alerta-id="' + a.alvoId + '">' +
+          esc(a.acaoRotulo) +
+        '</button>' +
+      '</div>'
+    }).join('')
+    var cotsAtivas = d.cotacoes.filter(function (c) { return c.status !== 'Cancelada' }).slice(0, 5)
+    var rfqRows = cotsAtivas.map(function (c, idx) {
+      var conv = c.fornecedoresConvidados.length
+      var resp = c.fornecedoresConvidados.filter(function (f) { return f.respondeu }).length
+      var dots = ''
+      for (var i = 0; i < Math.max(conv, 3); i++) {
+        dots += '<i class="' + (i < resp ? 'on' : '') + '"></i>'
+      }
+      var pct = c.status === 'Em análise' || c.status === 'Encerrada' ? 100 : c.horasRestantes <= 24 ? 82 : idx % 2 === 0 ? 60 : 32
+      var barClass = c.status === 'Em análise' || c.status === 'Encerrada' ? 'done' : c.horasRestantes <= 48 ? 'warn' : ''
+      var statRight = c.status === 'Em análise'
+        ? badgeStatusCotacao('Em análise')
+        : c.status === 'Encerrada'
+          ? badgeStatusCotacao('Encerrada')
+          : '<span class="p360-rfq-right-stat ' + (c.horasRestantes <= 48 ? 'warn' : '') + '">' + (c.horasRestantes <= 48 ? c.horasRestantes + ' h' : Math.ceil(c.horasRestantes / 24) + ' dias') + '</span>'
+      return '<div class="p360-rfq-item" data-open-cot="' + c.id + '">' +
+        '<div class="p360-rfq-top">' +
+          '<div class="p360-rfq-title"><code>' + esc(c.id) + '</code><b>' + esc(c.titulo) + '</b></div>' +
+          '<div class="p360-rfq-dots">' + dots + ' <span>' + resp + '/' + conv + '</span></div>' +
+        '</div>' +
+        '<div class="p360-rfq-inv">' + esc(NOME_INVESTIDA[c.investida] || c.investida) + '</div>' +
+        '<div class="p360-rfq-bar-row">' +
+          '<div class="p360-rfq-track-wrap">' +
+            '<div class="p360-rfq-track">' +
+              '<i class="' + barClass + '" style="width:' + pct + '%"></i>' +
+              (pct < 100 ? '<em style="left:' + pct + '%"></em>' : '') +
+            '</div>' +
+            '<div class="p360-rfq-dates"><span>' + esc(c.abertura.slice(0, 5)) + '</span><span>' + esc(c.prazo) + '</span></div>' +
+          '</div>' +
+          statRight +
+        '</div>' +
+      '</div>'
+    }).join('')
+    return heroHtml +
+      '<div class="p360-home-grid">' +
+        '<section class="p360-card">' +
+          '<div class="p360-card-header">' +
+            '<div class="p360-card-title">Precisa de atenção <span>' + alertas.length + '</span></div>' +
+          '</div>' +
+          '<div class="p360-attn-list">' + (attnRows || '<div style="padding:24px 0;color:var(--text-muted)">Nenhuma pendência crítica no momento.</div>') + '</div>' +
+        '</section>' +
+        '<section class="p360-card">' +
+          '<div class="p360-card-header">' +
+            '<div class="p360-card-title">Cotações em andamento <span>' + cotsAtivas.length + '</span></div>' +
+            '<button type="button" class="p360-btn sm" data-nav="mapa">Mapa comparativo</button>' +
+          '</div>' +
+          '<div class="p360-rfq-list">' + rfqRows + '</div>' +
+        '</section>' +
+      '</div>'
+  }
+  // ═══════════════════════════════════════════════════════════════════════════════
+  // 2. BASE DE FORNECEDORES (CLEAN & SPACIOUS)
+  // ═══════════════════════════════════════════════════════════════════════════════
+  function viewBaseFornecedores() {
+    var d = S.dados
+    var fb = S.fBase
+    var q = (fb.busca || S.buscaGlobal || '').toLowerCase().trim()
+    var lista = d.fornecedores.filter(function (f) {
+      var txt = (f.razaoSocial + ' ' + f.nomeFantasia + ' ' + f.cnpj + ' ' + f.categoria + ' ' + f.subcategoria).toLowerCase()
+      if (q && !txt.includes(q)) return false
+      if (fb.categoria && f.categoria !== fb.categoria) return false
+      if (fb.uf && f.uf !== fb.uf) return false
+      if (fb.situacao && f.statusHomologacao !== fb.situacao) return false
+      if (fb.bloqueio === 'sem' && f.bloqueado) return false
+      if (fb.bloqueio === 'com' && !f.bloqueado) return false
+      if (fb.investidaElegivel && !f.investidasHomologadas.includes(fb.investidaElegivel)) return false
+      return true
+    })
+    var rows = lista.map(function (f) {
+      var invPrincipal = f.investidasHomologadas[0]
+      var homologCell = invPrincipal
+        ? '<div class="p360-scope-badge">' +
+            '<span class="p360-scope-inv">' + SVG_SHIELD + esc(NOME_INVESTIDA[invPrincipal] || invPrincipal) + (f.investidasHomologadas.length > 1 ? ' +' + (f.investidasHomologadas.length - 1) : '') + '</span>' +
+            '<span class="p360-scope-cat">' + esc(f.subcategoria) + '</span>' +
+          '</div>'
+        : f.statusHomologacao === 'Em análise' || f.statusHomologacao === 'Aguardando análise'
+          ? '<span style="color:var(--blue-accent);font-weight:500;font-size:13px">1 em andamento</span>'
+          : '<span style="color:var(--text-muted);font-size:13px">Sem homologação</span>'
+      var docAlert = f.docsVencidos > 0
+        ? '<span class="p360-doc-alert-pill" title="' + f.docsVencidos + ' documento(s) vencido(s) ou rejeitado(s)">📄 ' + f.docsVencidos + '</span>'
+        : f.docsVencendo30d > 0
+          ? '<span class="p360-doc-alert-pill warn" title="' + f.docsVencendo30d + ' documento(s) vencendo em até 30 dias">📄 ' + f.docsVencendo30d + '</span>'
+          : ''
+      return '<tr class="clickable" data-open-forn="' + f.id + '">' +
+        '<td>' +
+          '<div class="p360-cell-title">' + esc(f.razaoSocial) + '</div>' +
+          '<div class="p360-cell-sub">' + esc(f.subcategoria) + ' · ' + esc(f.cidade) + ' · ' + esc(f.uf) + '</div>' +
+        '</td>' +
+        '<td class="p360-mono">' + esc(f.cnpj) + '</td>' +
+        '<td>' + homologCell + '</td>' +
+        '<td>' + badgeStatusFornecedor(f.statusHomologacao) + docAlert + '</td>' +
+      '</tr>'
+    }).join('')
+    return (
+      '<div class="p360-page-header">' +
+        '<div>' +
+          '<div class="p360-breadcrumb">Fornecedores</div>' +
+          '<h1 class="p360-page-title">Base de fornecedores</h1>' +
+          '<div class="p360-page-count">' + lista.length + ' fornecedores</div>' +
+        '</div>' +
+        '<button type="button" class="p360-btn primary" id="btnConvidarFornecedor">+ Convidar fornecedor</button>' +
+      '</div>' +
+      '<div class="p360-table-card">' +
+        '<div class="p360-filters-bar">' +
+          '<label class="p360-search-field">' + SVG_SEARCH +
+            '<input id="fBaseBusca" value="' + esc(fb.busca) + '" placeholder="Buscar por razão social, fantasia ou CNPJ">' +
+          '</label>' +
+          '<select class="p360-select" id="fBaseCat"><option value="">Todas as categorias</option>' +
+            d.categorias.map(function (c) { return '<option value="' + esc(c.nome) + '"' + (fb.categoria === c.nome ? ' selected' : '') + '>' + esc(c.nome) + '</option>' }).join('') +
+          '</select>' +
+          '<select class="p360-select" id="fBaseUf"><option value="">Todas as UFs</option>' +
+            ['SP', 'PR', 'SC', 'RS'].map(function (u) { return '<option value="' + u + '"' + (fb.uf === u ? ' selected' : '') + '>' + u + '</option>' }).join('') +
+          '</select>' +
+          '<select class="p360-select" id="fBaseSit"><option value="">Todas as situações</option>' +
+            ['Homologado', 'Em análise', 'Aguardando análise', 'Pendente fornecedor', 'Convidado', 'Bloqueado'].map(function (s) {
+              return '<option value="' + s + '"' + (fb.situacao === s ? ' selected' : '') + '>' + s + '</option>'
+            }).join('') +
+          '</select>' +
+          '<div style="width:100%;height:0"></div>' +
+          '<select class="p360-select" id="fBaseBloq">' +
+            '<option value="">Com e sem bloqueio</option>' +
+            '<option value="sem"' + (fb.bloqueio === 'sem' ? ' selected' : '') + '>Sem bloqueio</option>' +
+            '<option value="com"' + (fb.bloqueio === 'com' ? ' selected' : '') + '>Somente bloqueados</option>' +
+          '</select>' +
+          '<span class="p360-filter-label">Elegibilidade para</span>' +
+          '<select class="p360-select" id="fBaseInvEleg"><option value="">Escolha a investida</option>' +
+            d.investidas.map(function (i) { return '<option value="' + i.sigla + '"' + (fb.investidaElegivel === i.sigla ? ' selected' : '') + '>' + esc(i.nomeFantasia) + '</option>' }).join('') +
+          '</select>' +
+        '</div>' +
+        '<div class="p360-table-wrap">' +
+          '<table class="p360-table">' +
+            '<thead><tr><th>Fornecedor</th><th>CNPJ</th><th>Homologação</th><th>Situação</th></tr></thead>' +
+            '<tbody>' + (rows || '<tr><td colspan="4" style="text-align:center;padding:36px;color:var(--text-muted)">Nenhum fornecedor encontrado.</td></tr>') + '</tbody>' +
+          '</table>' +
+        '</div>' +
+      '</div>'
+    )
+  }
+  // ═══════════════════════════════════════════════════════════════════════════════
+  // 3. DETALHE DO FORNECEDOR (PERFIL 360 CLEAN)
+  // ═══════════════════════════════════════════════════════════════════════════════
+  function viewDetalheFornecedor() {
+    var d = S.dados
+    var f = d.fornecedores.find(function (x) { return x.id === S.fornecedorId }) || d.fornecedores[0]
+    var homs = d.homologacoes.filter(function (h) { return h.fornecedorId === f.id })
+    var cots = d.cotacoes.filter(function (c) {
+      return c.fornecedoresConvidados.some(function (fc) { return fc.fornecedorId === f.id })
+    })
+    var abas = [
+      ['visao-geral', 'Visão geral'],
+      ['dados-cadastrais', 'Dados cadastrais'],
+      ['documentos', 'Documentos', f.documentos.length],
+      ['homologacoes', 'Homologações', homs.length],
+      ['cotacoes', 'Cotações', cots.length],
+      ['historico', 'Histórico', f.historico.length]
+    ]
+    var conteudoAba = ''
+    if (S.abaFornecedor === 'visao-geral') {
+      conteudoAba =
+        '<div class="p360-kpi-row">' +
+          '<div class="p360-kpi-box"><span>Situação de homologação</span><b>' + esc(f.statusHomologacao) + '</b><small>Elegibilidade: ' + esc(f.elegibilidade) + '</small></div>' +
+          '<div class="p360-kpi-box"><span>Investidas homologadas</span><b>' + f.investidasHomologadas.length + '</b><small>' + (f.investidasHomologadas.length ? f.investidasHomologadas.join(', ') : 'Nenhuma investida ativa') + '</small></div>' +
+          '<div class="p360-kpi-box"><span>Documentos regulares</span><b>' + f.documentos.filter(function (x) { return x.status === 'valido' }).length + '/' + f.documentos.length + '</b><small>' + f.docsVencidos + ' vencidos · ' + f.docsVencendo30d + ' vencendo em 30d</small></div>' +
+          '<div class="p360-kpi-box"><span>Cotações (RFQs)</span><b>' + cots.length + '</b><small>Processos em que foi convidado</small></div>' +
+        '</div>' +
+        '<div class="p360-card">' +
+          '<div class="p360-card-header"><div class="p360-card-title">Resumo cadastral e contatos</div></div>' +
+          '<div class="p360-kv-grid">' +
+            '<div class="p360-kv"><span>Razão social</span><b>' + esc(f.razaoSocial) + '</b></div>' +
+            '<div class="p360-kv"><span>Nome fantasia</span><b>' + esc(f.nomeFantasia) + '</b></div>' +
+            '<div class="p360-kv"><span>CNPJ</span><b class="p360-mono">' + esc(f.cnpj) + '</b></div>' +
+            '<div class="p360-kv"><span>Categoria</span><b>' + esc(f.categoria) + ' › ' + esc(f.subcategoria) + '</b></div>' +
+            '<div class="p360-kv"><span>Localização</span><b>' + esc(f.cidade) + ' / ' + esc(f.uf) + '</b></div>' +
+            '<div class="p360-kv"><span>Contato comercial</span><b>' + esc(f.contatoComercial.nome) + ' · ' + esc(f.contatoComercial.email) + '</b></div>' +
+            '<div class="p360-kv"><span>Domicílio bancário</span><b>' + esc(f.contatoFinanceiro.banco) + ' · Ag ' + esc(f.contatoFinanceiro.agencia) + ' · CC ' + esc(f.contatoFinanceiro.conta) + '</b></div>' +
+            '<div class="p360-kv"><span>Token Portal do Fornecedor</span><b class="p360-mono">' + esc(f.portalToken) + '</b></div>' +
+          '</div>' +
+        '</div>'
+    } else if (S.abaFornecedor === 'dados-cadastrais') {
+      conteudoAba =
+        '<div class="p360-card">' +
+          '<div class="p360-card-header"><div class="p360-card-title">Dados societários, fiscais e bancários</div></div>' +
+          '<div class="p360-kv-grid">' +
+            '<div class="p360-kv"><span>Razão social</span><b>' + esc(f.razaoSocial) + '</b></div>' +
+            '<div class="p360-kv"><span>Nome fantasia</span><b>' + esc(f.nomeFantasia) + '</b></div>' +
+            '<div class="p360-kv"><span>CNPJ</span><b class="p360-mono">' + esc(f.cnpj) + '</b></div>' +
+            '<div class="p360-kv"><span>Inscrição estadual</span><b>' + esc(f.inscricaoEstadual) + '</b></div>' +
+            '<div class="p360-kv"><span>Regime tributário</span><b>' + esc(f.regimeTributario) + '</b></div>' +
+            '<div class="p360-kv"><span>Porte</span><b>' + esc(f.porte) + '</b></div>' +
+            '<div class="p360-kv"><span>Endereço</span><b>' + esc(f.endereco) + ' · CEP ' + esc(f.cep) + '</b></div>' +
+            '<div class="p360-kv"><span>Quadro societário</span><b>' + esc(f.socios.join(', ')) + '</b></div>' +
+            '<div class="p360-kv"><span>Telefone comercial</span><b>' + esc(f.contatoComercial.telefone) + '</b></div>' +
+            '<div class="p360-kv"><span>E-mail NFe / Financeiro</span><b>' + esc(f.contatoFinanceiro.email) + '</b></div>' +
+          '</div>' +
+        '</div>'
+    } else if (S.abaFornecedor === 'documentos') {
+      conteudoAba =
+        '<div class="p360-table-card">' +
+          '<div class="p360-table-wrap">' +
+            '<table class="p360-table">' +
+              '<thead><tr><th>Documento</th><th>Exigência</th><th>Emissão</th><th>Validade</th><th>Status</th><th>Arquivo</th><th class="right">Ações</th></tr></thead>' +
+              '<tbody>' +
+                f.documentos.map(function (doc) {
+                  return '<tr>' +
+                    '<td><div class="p360-cell-title">' + esc(doc.tipoNome) + '</div><div class="p360-cell-sub">' + esc(doc.observacaoAnalista) + '</div></td>' +
+                    '<td><span class="p360-badge ' + (doc.obrigatorio ? 'info' : 'neutral') + '">' + (doc.obrigatorio ? 'Obrigatório' : 'Opcional') + '</span></td>' +
+                    '<td>' + esc(doc.emissao) + '</td>' +
+                    '<td>' + esc(doc.validade) + '</td>' +
+                    '<td>' + badgeStatusDoc(doc.status) + '</td>' +
+                    '<td class="p360-mono">' + (doc.arquivo ? esc(doc.arquivo) : 'Não enviado') + '</td>' +
+                    '<td class="right">' +
+                      '<div style="display:inline-flex;gap:6px">' +
+                        '<button type="button" class="p360-btn sm" data-doc-act="aprovar" data-forn="' + f.id + '" data-doc="' + doc.id + '">Aprovar</button>' +
+                        '<button type="button" class="p360-btn sm" data-doc-act="pedir_correcao" data-forn="' + f.id + '" data-doc="' + doc.id + '">Cobrar</button>' +
+                        '<button type="button" class="p360-btn sm" data-doc-act="reprovar" data-forn="' + f.id + '" data-doc="' + doc.id + '">Reprovar</button>' +
+                      '</div>' +
+                    '</td>' +
+                  '</tr>'
+                }).join('') +
+              '</tbody>' +
+            '</table>' +
+          '</div>' +
+        '</div>'
+    } else if (S.abaFornecedor === 'homologacoes') {
+      conteudoAba =
+        '<div class="p360-table-card">' +
+          '<div class="p360-table-wrap">' +
+            '<table class="p360-table">' +
+              '<thead><tr><th>Protocolo</th><th>Escopo</th><th>Situação</th><th>Na etapa</th><th>Responsável</th><th class="right">Ação</th></tr></thead>' +
+              '<tbody>' +
+                (homs.length
+                  ? homs.map(function (h) {
+                      return '<tr class="clickable" data-open-hom="' + h.id + '">' +
+                        '<td class="p360-mono">' + esc(h.id) + '</td>' +
+                        '<td>' + esc(NOME_INVESTIDA[h.investida] || h.investida) + ' · ' + esc(h.categoria) + '</td>' +
+                        '<td>' + badgeStatusFornecedor(h.rotuloStatus) + '</td>' +
+                        '<td>' + h.diasNaEtapa + ' dias</td>' +
+                        '<td>' + esc(h.responsavel) + '</td>' +
+                        '<td class="right"><button type="button" class="p360-btn sm" data-open-hom="' + h.id + '">Analisar</button></td>' +
+                      '</tr>'
+                    }).join('')
+                  : '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted)">Nenhum processo de homologação.</td></tr>') +
+              '</tbody>' +
+            '</table>' +
+          '</div>' +
+        '</div>'
+    } else if (S.abaFornecedor === 'cotacoes') {
+      conteudoAba =
+        '<div class="p360-table-card">' +
+          '<div class="p360-table-wrap">' +
+            '<table class="p360-table">' +
+              '<thead><tr><th>RFQ</th><th>Título</th><th>Investida</th><th>Prazo</th><th>Convite</th><th>Status</th></tr></thead>' +
+              '<tbody>' +
+                cots.map(function (c) {
+                  var conv = c.fornecedoresConvidados.find(function (fc) { return fc.fornecedorId === f.id })
+                  return '<tr class="clickable" data-open-cot="' + c.id + '">' +
+                    '<td class="p360-mono">' + esc(c.id) + '</td>' +
+                    '<td><div class="p360-cell-title">' + esc(c.titulo) + '</div></td>' +
+                    '<td>' + esc(NOME_INVESTIDA[c.investida] || c.investida) + '</td>' +
+                    '<td>' + esc(c.prazo) + '</td>' +
+                    '<td><span class="p360-badge ' + (conv && conv.respondeu ? 'ok' : 'warn') + '"><i></i>' + esc(conv ? conv.statusConvite : 'Convidado') + '</span></td>' +
+                    '<td>' + badgeStatusCotacao(c.status) + '</td>' +
+                  '</tr>'
+                }).join('') +
+              '</tbody>' +
+            '</table>' +
+          '</div>' +
+        '</div>'
+    } else if (S.abaFornecedor === 'historico') {
+      conteudoAba =
+        '<div class="p360-card">' +
+          '<div class="p360-card-header"><div class="p360-card-title">Linha do tempo auditável</div></div>' +
+          '<div class="p360-attn-list">' +
+            f.historico.map(function (ev) {
+              return '<div class="p360-attn-row">' +
+                '<div><div class="p360-cell-title">' + esc(ev.titulo) + '</div><div class="p360-cell-sub">' + esc(ev.detalhe) + ' · Por ' + esc(ev.usuario) + '</div></div>' +
+                '<span class="p360-mono">' + esc(ev.dataHora) + '</span>' +
+              '</div>'
+            }).join('') +
+          '</div>' +
+        '</div>'
+    }
+    return (
+      '<div class="p360-page-header">' +
+        '<div>' +
+          '<div class="p360-breadcrumb"><button type="button" data-nav="base">‹ Base de fornecedores</button> <span>/</span> <span>Perfil 360</span></div>' +
+          '<h1 class="p360-page-title">' + esc(f.razaoSocial) + '</h1>' +
+          '<div class="p360-page-count">' + esc(f.nomeFantasia) + ' · <span class="p360-mono">' + esc(f.cnpj) + '</span> · ' + esc(f.cidade) + '/' + esc(f.uf) + '</div>' +
+        '</div>' +
+        '<div style="display:flex;gap:8px;align-items:center">' +
+          badgeStatusFornecedor(f.statusHomologacao) +
+          (homs[0] ? '<button type="button" class="p360-btn primary" data-open-hom="' + homs[0].id + '">Analisar homologação</button>' : '') +
+        '</div>' +
+      '</div>' +
+      '<div class="p360-tabs">' +
+        abas.map(function (a) {
+          return '<button type="button" class="p360-tab ' + (S.abaFornecedor === a[0] ? 'active' : '') + '" data-aba-forn="' + a[0] + '">' +
+            esc(a[1]) + (a[2] != null ? ' <span>' + a[2] + '</span>' : '') +
+          '</button>'
+        }).join('') +
+      '</div>' +
+      conteudoAba
+    )
+  }
+  // ═══════════════════════════════════════════════════════════════════════════════
+  // 4. HOMOLOGAÇÃO (FILA OPERACIONAL + MESA DE ANÁLISE CLEAN)
+  // ═══════════════════════════════════════════════════════════════════════════════
+  function viewHomologacoes() {
+    var d = S.dados
+    var fh = S.fHom
+    var todas = d.homologacoes
+    var contNaFila = todas.filter(function (h) { return h.status !== 'aprovada' && h.status !== 'reprovada' }).length
+    var contAguard = todas.filter(function (h) { return h.status === 'aguardando_analise' }).length
+    var contEm = todas.filter(function (h) { return h.status === 'em_analise' }).length
+    var contForn = todas.filter(function (h) { return h.status === 'com_fornecedor' }).length
+    var contEnc = todas.filter(function (h) { return h.status === 'aprovada' || h.status === 'reprovada' }).length
+    var tabs = [
+      ['na_fila', 'Na fila', contNaFila],
+      ['aguardando_analise', 'Aguardando análise', contAguard],
+      ['em_analise', 'Em análise', contEm],
+      ['com_fornecedor', 'Com o fornecedor', contForn],
+      ['encerradas', 'Encerradas', contEnc]
+    ]
+    var lista = todas.filter(function (h) {
+      if (S.abaHomologacao === 'na_fila' && (h.status === 'aprovada' || h.status === 'reprovada')) return false
+      if (S.abaHomologacao === 'aguardando_analise' && h.status !== 'aguardando_analise') return false
+      if (S.abaHomologacao === 'em_analise' && h.status !== 'em_analise') return false
+      if (S.abaHomologacao === 'com_fornecedor' && h.status !== 'com_fornecedor') return false
+      if (S.abaHomologacao === 'encerradas' && h.status !== 'aprovada' && h.status !== 'reprovada') return false
+      var q = (fh.busca || S.buscaGlobal || '').toLowerCase().trim()
+      if (q && !(h.fornecedorNome + ' ' + h.razaoSocial + ' ' + h.cnpj).toLowerCase().includes(q)) return false
+      if (fh.investida && h.investida !== fh.investida) return false
+      if (fh.categoria && h.categoria !== fh.categoria) return false
+      if (fh.responsavel && h.responsavel !== fh.responsavel) return false
+      return true
+    })
+    var rows = lista.map(function (h) {
+      var stBadge = h.status === 'em_analise'
+        ? '<span class="p360-badge info"><i></i>Em análise</span>'
+        : h.status === 'com_fornecedor'
+          ? '<span class="p360-badge warn"><i></i>Devolvida</span>'
+          : h.status === 'aguardando_analise'
+            ? '<span class="p360-badge warn"><i></i>Aguardando análise</span>'
+            : h.status === 'aprovada'
+              ? '<span class="p360-badge ok"><i></i>Homologado</span>'
+              : '<span class="p360-badge bad"><i></i>Reprovada</span>'
+      var scopeStyle = h.status === 'em_analise' ? 'blue' : 'neutral'
+      return '<tr class="clickable" data-open-hom="' + h.id + '">' +
+        '<td>' +
+          '<div class="p360-cell-title">' + esc(h.razaoSocial) + '</div>' +
+          '<div class="p360-cell-sub p360-mono">' + esc(h.cnpj) + '</div>' +
+        '</td>' +
+        '<td>' +
+          '<div class="p360-scope-badge">' +
+            '<span class="p360-scope-inv ' + scopeStyle + '">' + SVG_SHIELD + esc(NOME_INVESTIDA[h.investida] || h.investida) + '</span>' +
+            '<span class="p360-scope-cat">' + esc(h.categoria) + ' › ' + esc(h.subcategoria) + '</span>' +
+          '</div>' +
+        '</td>' +
+        '<td>' + stBadge + '</td>' +
+        '<td>' + h.diasNaEtapa + ' dias</td>' +
+        '<td>' + (h.pendenciasAbertas > 0 ? '<span style="color:#B45309;font-weight:600">' + h.pendenciasAbertas + ' aberta</span>' : '<span style="color:var(--text-muted)">—</span>') + '</td>' +
+        '<td style="color:' + (h.responsavel === 'Sem responsável' ? 'var(--text-muted)' : 'var(--text-secondary)') + '">' + esc(h.responsavel) + '</td>' +
+      '</tr>'
+    }).join('')
+    return (
+      '<div class="p360-page-header">' +
+        '<div>' +
+          '<div class="p360-breadcrumb">Fornecedores</div>' +
+          '<h1 class="p360-page-title">Homologação</h1>' +
+          '<div class="p360-page-count">' + contNaFila + ' na fila</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="p360-tabs">' +
+        tabs.map(function (t) {
+          return '<button type="button" class="p360-tab ' + (S.abaHomologacao === t[0] ? 'active' : '') + '" data-aba-hom="' + t[0] + '">' +
+            esc(t[1]) + ' <span>' + t[2] + '</span>' +
+          '</button>'
+        }).join('') +
+      '</div>' +
+      '<div class="p360-table-card">' +
+        '<div class="p360-filters-bar">' +
+          '<label class="p360-search-field">' + SVG_SEARCH +
+            '<input id="fHomBusca" value="' + esc(fh.busca) + '" placeholder="Fornecedor ou CNPJ">' +
+          '</label>' +
+          '<select class="p360-select" id="fHomInv"><option value="">Todas as investidas</option>' +
+            d.investidas.map(function (i) { return '<option value="' + i.sigla + '"' + (fh.investida === i.sigla ? ' selected' : '') + '>' + esc(i.nomeFantasia) + '</option>' }).join('') +
+          '</select>' +
+          '<select class="p360-select" id="fHomCat"><option value="">Todas as categorias</option>' +
+            d.categorias.map(function (c) { return '<option value="' + esc(c.nome) + '"' + (fh.categoria === c.nome ? ' selected' : '') + '>' + esc(c.nome) + '</option>' }).join('') +
+          '</select>' +
+          '<select class="p360-select" id="fHomResp"><option value="">Qualquer responsável</option><option value="Fernanda Ribeiro"' + (fh.responsavel === 'Fernanda Ribeiro' ? ' selected' : '') + '>Fernanda Ribeiro</option><option value="Sem responsável"' + (fh.responsavel === 'Sem responsável' ? ' selected' : '') + '>Sem responsável</option></select>' +
+          '<select class="p360-select" id="fHomTempo"><option value="">Qualquer tempo</option><option value="2d">2 dias ou mais</option></select>' +
+        '</div>' +
+        '<div class="p360-table-wrap">' +
+          '<table class="p360-table">' +
+            '<thead><tr><th>Fornecedor</th><th>Escopo</th><th>Situação</th><th>Na etapa</th><th>Pendências</th><th>Responsável</th></tr></thead>' +
+            '<tbody>' + (rows || '<tr><td colspan="6" style="text-align:center;padding:36px;color:var(--text-muted)">Nenhuma homologação nesta aba.</td></tr>') + '</tbody>' +
+          '</table>' +
+        '</div>' +
+      '</div>'
+    )
+  }
+  function viewMesaHomologacao() {
+    var d = S.dados
+    var h = d.homologacoes.find(function (x) { return x.id === S.homologacaoId }) || d.homologacoes[0]
+    var f = d.fornecedores.find(function (x) { return x.id === h.fornecedorId }) || d.fornecedores[0]
+    var simbolo = function (st) { return st === 'ok' ? '✓' : st === 'att' ? '⚠' : st === 'bad' ? '✕' : '•' }
+    return (
+      '<div class="p360-page-header">' +
+        '<div>' +
+          '<div class="p360-breadcrumb"><button type="button" data-nav="homologacoes">‹ Homologação</button> <span>/</span> <span>' + esc(h.id) + '</span></div>' +
+          '<h1 class="p360-page-title">' + esc(h.razaoSocial) + '</h1>' +
+          '<div class="p360-page-count"><span class="p360-mono">' + esc(h.cnpj) + '</span> · Escopo: <b>' + esc(NOME_INVESTIDA[h.investida] || h.investida) + '</b> · ' + esc(h.categoria) + ' › ' + esc(h.subcategoria) + '</div>' +
+        '</div>' +
+        '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
+          '<button type="button" class="p360-btn" data-open-forn="' + f.id + '">Ver Perfil 360</button>' +
+          '<button type="button" class="p360-btn" data-decidir-hom="' + h.id + '" data-decisao="devolver_fornecedor">Devolver com pendência</button>' +
+          '<button type="button" class="p360-btn" data-decidir-hom="' + h.id + '" data-decisao="reprovar">Reprovar</button>' +
+          '<button type="button" class="p360-btn primary" data-decidir-hom="' + h.id + '" data-decisao="aprovar">✓ Aprovar homologação</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="p360-card" style="margin-bottom:20px">' +
+        '<div class="p360-card-header"><div class="p360-card-title">Checklist de conformidade documental</div></div>' +
+        '<div class="p360-check-strip">' +
+          h.checklist.map(function (ck) {
+            return '<div class="p360-check-item">' +
+              '<span class="p360-check-mark ' + ck.status + '">' + simbolo(ck.status) + '</span>' +
+              '<div><div class="p360-cell-title" style="font-size:13px">' + esc(ck.item) + '</div><div class="p360-cell-sub">' + esc(ck.detalhe) + '</div></div>' +
+            '</div>'
+          }).join('') +
+        '</div>' +
+      '</div>' +
+      '<div class="p360-table-card" style="margin-bottom:20px">' +
+        '<div class="p360-filters-bar" style="justify-content:space-between">' +
+          '<div class="p360-card-title" style="font-size:15px">Documentos enviados para análise</div>' +
+          '<span style="font-size:12.5px;color:var(--text-muted)">Clique em aprovar, reprovar ou pedir correção em cada documento</span>' +
+        '</div>' +
+        '<div class="p360-table-wrap">' +
+          '<table class="p360-table">' +
+            '<thead><tr><th>Documento</th><th>Validade</th><th>Status</th><th>Arquivo</th><th>Observação</th><th class="right">Decisão</th></tr></thead>' +
+            '<tbody>' +
+              f.documentos.map(function (doc) {
+                return '<tr>' +
+                  '<td><div class="p360-cell-title">' + esc(doc.tipoNome) + '</div><div class="p360-cell-sub">' + (doc.obrigatorio ? 'Obrigatório' : 'Opcional') + ' · Emissão ' + esc(doc.emissao) + '</div></td>' +
+                  '<td>' + esc(doc.validade) + '</td>' +
+                  '<td>' + badgeStatusDoc(doc.status) + '</td>' +
+                  '<td class="p360-mono">' + (doc.arquivo ? esc(doc.arquivo) : 'Pendente') + '</td>' +
+                  '<td style="font-size:12.5px;color:var(--text-secondary)">' + esc(doc.observacaoAnalista) + '</td>' +
+                  '<td class="right">' +
+                    '<div style="display:inline-flex;gap:6px">' +
+                      '<button type="button" class="p360-btn sm" data-doc-act="aprovar" data-forn="' + f.id + '" data-doc="' + doc.id + '">✓ Aprovar</button>' +
+                      '<button type="button" class="p360-btn sm" data-doc-act="pedir_correcao" data-forn="' + f.id + '" data-doc="' + doc.id + '">Pedir correção</button>' +
+                      '<button type="button" class="p360-btn sm" data-doc-act="reprovar" data-forn="' + f.id + '" data-doc="' + doc.id + '">✕ Reprovar</button>' +
+                    '</div>' +
+                  '</td>' +
+                '</tr>'
+              }).join('') +
+            '</tbody>' +
+          '</table>' +
+        '</div>' +
+      '</div>' +
+      '<div class="p360-card">' +
+        '<div class="p360-card-header"><div class="p360-card-title">Parecer do analista e rastreabilidade</div></div>' +
+        '<label class="p360-label">Observação técnica / orientação de correção para o fornecedor' +
+          '<textarea class="p360-textarea" id="txtParecerHom">' + esc(h.observacoesAnalista) + '</textarea>' +
+        '</label>' +
+      '</div>'
+    )
+  }
+  // ═══════════════════════════════════════════════════════════════════════════════
+  // 5. COTAÇÕES / RFQ (LISTAGEM, STEPPER 5 ETAPAS E COCKPIT DA RFQ)
+  // ═══════════════════════════════════════════════════════════════════════════════
+  function viewCotacoes() {
+    var d = S.dados
+    var fc = S.fCot
+    var q = (fc.busca || S.buscaGlobal || '').toLowerCase().trim()
+    var lista = d.cotacoes.filter(function (c) {
+      if (q && !(c.id + ' ' + c.titulo + ' ' + c.categoria + ' ' + c.comprador).toLowerCase().includes(q)) return false
+      if (fc.status && c.status !== fc.status) return false
+      if (fc.categoria && c.categoria !== fc.categoria) return false
+      return true
+    })
+    var rows = lista.map(function (c) {
+      var conv = c.fornecedoresConvidados.length
+      var resp = c.fornecedoresConvidados.filter(function (f) { return f.respondeu }).length
+      var dots = ''
+      for (var i = 0; i < Math.max(conv, 1); i++) dots += '<i class="' + (i < resp ? 'on' : '') + '"></i>'
+      return '<tr class="clickable" data-open-cot="' + c.id + '">' +
+        '<td class="p360-mono">' + esc(c.id) + '</td>' +
+        '<td><div class="p360-cell-title">' + esc(c.titulo) + '</div><div class="p360-cell-sub">' + esc(c.categoria) + ' › ' + esc(c.subcategoria) + ' · Comprador: ' + esc(c.comprador) + '</div></td>' +
+        '<td>' + esc(NOME_INVESTIDA[c.investida] || c.investida) + '</td>' +
+        '<td>' + esc(c.prazo) + '</td>' +
+        '<td><div class="p360-rfq-dots">' + dots + ' <span>' + resp + '/' + conv + '</span></div></td>' +
+        '<td class="right">' + fmtMoedaCurta(c.valorEstimado) + '</td>' +
+        '<td>' + badgeStatusCotacao(c.status) + '</td>' +
+      '</tr>'
+    }).join('')
+    return (
+      '<div class="p360-page-header">' +
+        '<div>' +
+          '<div class="p360-breadcrumb">Sourcing</div>' +
+          '<h1 class="p360-page-title">Cotações (RFQ)</h1>' +
+          '<div class="p360-page-count">' + lista.length + ' cotações registradas</div>' +
+        '</div>' +
+        '<div style="display:flex;gap:10px">' +
+          '<button type="button" class="p360-btn" data-nav="mapa">Mapa comparativo</button>' +
+          '<button type="button" class="p360-btn primary" data-open-sub="nova-cotacao">+ Nova cotação</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="p360-table-card">' +
+        '<div class="p360-filters-bar">' +
+          '<label class="p360-search-field">' + SVG_SEARCH +
+            '<input id="fCotBusca" value="' + esc(fc.busca) + '" placeholder="Buscar por ID, título ou comprador">' +
+          '</label>' +
+          '<select class="p360-select" id="fCotCat"><option value="">Todas as categorias</option>' +
+            d.categorias.map(function (c) { return '<option value="' + esc(c.nome) + '"' + (fc.categoria === c.nome ? ' selected' : '') + '>' + esc(c.nome) + '</option>' }).join('') +
+          '</select>' +
+          '<select class="p360-select" id="fCotSt"><option value="">Todos os status</option>' +
+            ['Aberta', 'Recebendo propostas', 'Em análise', 'Em negociação', 'Convite programado', 'Rascunho', 'Encerrada'].map(function (s) {
+              return '<option value="' + s + '"' + (fc.status === s ? ' selected' : '') + '>' + s + '</option>'
+            }).join('') +
+          '</select>' +
+        '</div>' +
+        '<div class="p360-table-wrap">' +
+          '<table class="p360-table">' +
+            '<thead><tr><th>ID</th><th>Cotação</th><th>Investida</th><th>Prazo</th><th>Respostas</th><th class="right">Estimado</th><th>Status</th></tr></thead>' +
+            '<tbody>' + rows + '</tbody>' +
+          '</table>' +
+        '</div>' +
+      '</div>'
+    )
+  }
+  function viewWizardCotacao() {
+    var d = S.dados
+    var w = S.wizard
+    var steps = [[1, 'Informações'], [2, 'Itens'], [3, 'Fornecedores'], [4, 'Condições comerciais'], [5, 'Revisão']]
+    var miolo = ''
+    if (w.etapa === 1) {
+      miolo =
+        '<div class="p360-form-grid">' +
+          '<label class="p360-label">Título da cotação *<input class="p360-input" id="wzTit" value="' + esc(w.titulo) + '" placeholder="Ex.: Embalagens e filme stretch 1T27"></label>' +
+          '<label class="p360-label">Categoria *<select class="p360-select" id="wzCat">' +
+            d.categorias.map(function (c) { return '<option value="' + esc(c.nome) + '"' + (w.categoria === c.nome ? ' selected' : '') + '>' + esc(c.nome) + '</option>' }).join('') +
+          '</select></label>' +
+          '<label class="p360-label">Investida solicitante *<select class="p360-select" id="wzInv">' +
+            d.investidas.map(function (i) { return '<option value="' + i.sigla + '"' + (w.investida === i.sigla ? ' selected' : '') + '>' + esc(i.nomeFantasia) + '</option>' }).join('') +
+          '</select></label>' +
+          '<label class="p360-label">Comprador responsável *<input class="p360-input" id="wzComp" value="' + esc(w.comprador) + '"></label>' +
+          '<label class="p360-label">Prazo (Deadline) *<input class="p360-input" id="wzPrazo" value="' + esc(w.prazo) + '"></label>' +
+          '<label class="p360-label">Local de entrega<input class="p360-input" id="wzLocal" value="' + esc(w.localEntrega) + '"></label>' +
+        '</div>' +
+        '<label class="p360-label" style="margin-top:14px">Descrição e escopo<textarea class="p360-textarea" id="wzDesc">' + esc(w.descricao) + '</textarea></label>'
+    } else if (w.etapa === 2) {
+      miolo =
+        '<div class="p360-table-wrap" style="margin-bottom:16px">' +
+          '<table class="p360-table">' +
+            '<thead><tr><th>Código</th><th>Descrição</th><th class="right">Qtd</th><th>Unid</th><th>Especificação</th><th class="right">Preço ref.</th></tr></thead>' +
+            '<tbody>' +
+              w.itens.map(function (it) {
+                return '<tr><td class="p360-mono">' + esc(it.codigo) + '</td><td><b>' + esc(it.descricao) + '</b></td><td class="right">' + it.quantidade + '</td><td>' + esc(it.unidade) + '</td><td>' + esc(it.especificacao) + '</td><td class="right">' + fmtMoeda(it.precoReferenciaUnit) + '</td></tr>'
+              }).join('') +
+            '</tbody>' +
+          '</table>' +
+        '</div>' +
+        '<div class="p360-form-grid">' +
+          '<label class="p360-label">Novo item (Descrição)<input class="p360-input" id="wzNovoItemDesc" placeholder="Ex.: Saco Plástico Bobina Picotada 5kg"></label>' +
+          '<div style="display:flex;gap:10px;align-items:flex-end">' +
+            '<label class="p360-label" style="width:110px">Quantidade<input class="p360-input" id="wzNovoItemQtd" type="number" value="200"></label>' +
+            '<label class="p360-label" style="width:120px">Preço ref. (R$)<input class="p360-input" id="wzNovoItemPreco" type="number" value="42"></label>' +
+            '<button type="button" class="p360-btn" id="btnWzAddItem">+ Adicionar</button>' +
+          '</div>' +
+        '</div>'
+    } else if (w.etapa === 3) {
+      miolo =
+        '<div class="p360-table-wrap">' +
+          '<table class="p360-table">' +
+            '<thead><tr><th>Convidar</th><th>Fornecedor</th><th>Categoria</th><th>Status de homologação</th><th>Situação documental</th></tr></thead>' +
+            '<tbody>' +
+              d.fornecedores.map(function (f) {
+                var chk = w.fornecedorIds.includes(f.id)
+                return '<tr>' +
+                  '<td><input type="checkbox" data-wz-forn="' + f.id + '"' + (chk ? ' checked' : '') + (f.bloqueado ? ' disabled' : '') + '></td>' +
+                  '<td><div class="p360-cell-title">' + esc(f.nomeFantasia) + '</div><div class="p360-cell-sub p360-mono">' + esc(f.cnpj) + '</div></td>' +
+                  '<td>' + esc(f.categoria) + '</td>' +
+                  '<td>' + badgeStatusFornecedor(f.statusHomologacao) + '</td>' +
+                  '<td>' + (f.bloqueado ? '<span class="p360-badge bad"><i></i>Bloqueado</span>' : f.docsVencidos > 0 ? '<span class="p360-badge warn"><i></i>' + f.docsVencidos + ' doc vencido</span>' : '<span class="p360-badge ok"><i></i>Regular</span>') + '</td>' +
+                '</tr>'
+              }).join('') +
+            '</tbody>' +
+          '</table>' +
+        '</div>'
+    } else if (w.etapa === 4) {
+      miolo =
+        '<div class="p360-form-grid">' +
+          '<label class="p360-label">Condição de pagamento padrão<input class="p360-input" id="wzPag" value="' + esc(w.pagamentoPadrao) + '"></label>' +
+          '<label class="p360-label">Modalidade de frete<input class="p360-input" id="wzFrete" value="' + esc(w.tipoFretePreferencial) + '"></label>' +
+          '<label class="p360-label">Regra de impostos<input class="p360-input" id="wzImp" value="' + esc(w.impostosRegra) + '"></label>' +
+          '<label class="p360-label">Validade mínima da proposta (dias)<input class="p360-input" id="wzVal" type="number" value="' + w.validadeMinimaDias + '"></label>' +
+        '</div>'
+    } else {
+      var totalEst = w.itens.reduce(function (a, i) { return a + i.quantidade * i.precoReferenciaUnit }, 0)
+      miolo =
+        '<div class="p360-kv-grid">' +
+          '<div class="p360-kv"><span>Título da RFQ</span><b>' + esc(w.titulo || 'Embalagens e filme stretch 1T27') + '</b></div>' +
+          '<div class="p360-kv"><span>Categoria e investida</span><b>' + esc(w.categoria) + ' · ' + esc(NOME_INVESTIDA[w.investida] || w.investida) + '</b></div>' +
+          '<div class="p360-kv"><span>Prazo limite</span><b>' + esc(w.prazo) + '</b></div>' +
+          '<div class="p360-kv"><span>Itens e baseline</span><b>' + w.itens.length + ' itens (' + fmtMoeda(totalEst) + ')</b></div>' +
+          '<div class="p360-kv"><span>Fornecedores convidados</span><b>' + w.fornecedorIds.length + ' fornecedores selecionados</b></div>' +
+          '<div class="p360-kv"><span>Condições</span><b>' + esc(w.pagamentoPadrao) + ' · ' + esc(w.tipoFretePreferencial) + '</b></div>' +
+        '</div>'
+    }
+    return (
+      '<div class="p360-page-header">' +
+        '<div>' +
+          '<div class="p360-breadcrumb"><button type="button" data-nav="cotacoes">‹ Cotações</button> <span>/</span> <span>Nova cotação</span></div>' +
+          '<h1 class="p360-page-title">Criar nova cotação (RFQ)</h1>' +
+        '</div>' +
+      '</div>' +
+      '<div class="p360-card">' +
+        '<div class="p360-stepper">' +
+          steps.map(function (s) {
+            var cls = w.etapa === s[0] ? 'active' : w.etapa > s[0] ? 'done' : ''
+            return '<button type="button" class="p360-step ' + cls + '" data-wz-step="' + s[0] + '"><i>' + (w.etapa > s[0] ? '✓' : s[0]) + '</i>' + esc(s[1]) + '</button>'
+          }).join('') +
+        '</div>' +
+        miolo +
+        '<div style="display:flex;justify-content:space-between;margin-top:22px;padding-top:16px;border-top:1px solid #EEF2F8">' +
+          '<button type="button" class="p360-btn" data-nav="cotacoes">Cancelar</button>' +
+          '<div style="display:flex;gap:8px">' +
+            (w.etapa > 1 ? '<button type="button" class="p360-btn" id="btnWzPrev">‹ Anterior</button>' : '') +
+            (w.etapa < 5
+              ? '<button type="button" class="p360-btn primary" id="btnWzNext">Próxima etapa ›</button>'
+              : '<button type="button" class="p360-btn primary" id="btnWzSubmit">Enviar cotação</button>') +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    )
+  }
+  function viewDetalheCotacao() {
+    var d = S.dados
+    var c = d.cotacoes.find(function (x) { return x.id === S.cotacaoId }) || d.cotacoes[0]
+    var conv = c.fornecedoresConvidados.length
+    var resp = c.fornecedoresConvidados.filter(function (f) { return f.respondeu }).length
+    var tabs = [
+      ['visao-geral', 'Visão geral'],
+      ['itens', 'Itens', c.itens.length],
+      ['fornecedores', 'Fornecedores', conv],
+      ['propostas', 'Propostas', c.propostas.length],
+      ['mapa-comparativo', 'Mapa comparativo'],
+      ['historico', 'Histórico', c.historico.length]
+    ]
+    var body = ''
+    if (S.abaCotacao === 'mapa-comparativo') {
+      body = renderMatrizComparativa(c)
+    } else if (S.abaCotacao === 'itens') {
+      body =
+        '<div class="p360-table-card"><div class="p360-table-wrap"><table class="p360-table">' +
+          '<thead><tr><th>Código</th><th>Descrição</th><th class="right">Quantidade</th><th>Unid</th><th>Especificação</th><th class="right">Preço ref. unit.</th></tr></thead>' +
+          '<tbody>' +
+            c.itens.map(function (it) {
+              return '<tr><td class="p360-mono">' + esc(it.codigo) + '</td><td><b>' + esc(it.descricao) + '</b></td><td class="right">' + it.quantidade + '</td><td>' + esc(it.unidade) + '</td><td>' + esc(it.especificacao) + '</td><td class="right">' + fmtMoeda(it.precoReferenciaUnit) + '</td></tr>'
+            }).join('') +
+          '</tbody>' +
+        '</table></div></div>'
+    } else if (S.abaCotacao === 'fornecedores') {
+      body =
+        '<div class="p360-table-card"><div class="p360-table-wrap"><table class="p360-table">' +
+          '<thead><tr><th>Fornecedor</th><th>CNPJ</th><th>Homologação</th><th>Certidões</th><th>Resposta</th></tr></thead>' +
+          '<tbody>' +
+            c.fornecedoresConvidados.map(function (fc) {
+              return '<tr class="clickable" data-open-forn="' + fc.fornecedorId + '">' +
+                '<td><b>' + esc(fc.nomeFantasia) + '</b></td>' +
+                '<td class="p360-mono">' + esc(fc.cnpj) + '</td>' +
+                '<td>' + badgeStatusFornecedor(fc.statusHomologacao) + '</td>' +
+                '<td>' + (fc.docVencido ? '<span class="p360-badge bad"><i></i>Documento vencido</span>' : '<span class="p360-badge ok"><i></i>Em dia</span>') + '</td>' +
+                '<td><span class="p360-badge ' + (fc.respondeu ? 'ok' : 'warn') + '"><i></i>' + esc(fc.statusConvite) + '</span></td>' +
+              '</tr>'
+            }).join('') +
+          '</tbody>' +
+        '</table></div></div>'
+    } else if (S.abaCotacao === 'propostas') {
+      body =
+        '<div class="p360-table-card"><div class="p360-table-wrap"><table class="p360-table">' +
+          '<thead><tr><th>Fornecedor</th><th>Pagamento</th><th>Prazo médio</th><th>Frete</th><th>Apontamentos</th><th class="right">Total equalizado</th></tr></thead>' +
+          '<tbody>' +
+            c.propostas.map(function (p) {
+              return '<tr>' +
+                '<td><div class="p360-cell-title">' + esc(p.fornecedorNome) + '</div><div class="p360-cell-sub">' + esc(p.enviadaEm) + '</div></td>' +
+                '<td>' + esc(p.condicaoPagamento) + '</td>' +
+                '<td>' + p.prazoEntregaMedioDias + ' dias</td>' +
+                '<td>' + esc(p.tipoFrete) + '</td>' +
+                '<td>' + (p.divergencias.length ? '<span class="p360-badge warn"><i></i>' + p.divergencias.length + ' divergência(s)</span>' : '<span class="p360-badge ok"><i></i>100% aderente</span>') + '</td>' +
+                '<td class="right"><b>' + fmtMoeda(p.totalEqualizado) + '</b></td>' +
+              '</tr>'
+            }).join('') +
+          '</tbody>' +
+        '</table></div></div>'
+    } else if (S.abaCotacao === 'historico') {
+      body =
+        '<div class="p360-card"><div class="p360-attn-list">' +
+          c.historico.map(function (ev) {
+            return '<div class="p360-attn-row"><div><div class="p360-cell-title">' + esc(ev.titulo) + '</div><div class="p360-cell-sub">' + esc(ev.detalhe) + ' · ' + esc(ev.usuario) + '</div></div><span class="p360-mono">' + esc(ev.dataHora) + '</span></div>'
+          }).join('') +
+        '</div></div>'
+    } else {
+      body =
+        '<div class="p360-kpi-row">' +
+          '<div class="p360-kpi-box"><span>Fornecedores convidados</span><b>' + conv + '</b><small>' + esc(NOME_INVESTIDA[c.investida] || c.investida) + '</small></div>' +
+          '<div class="p360-kpi-box"><span>Respostas recebidas</span><b>' + resp + '/' + conv + '</b><small>' + Math.max(0, conv - resp) + ' pendente(s)</small></div>' +
+          '<div class="p360-kpi-box"><span>Tempo restante</span><b>' + (c.horasRestantes > 0 ? c.horasRestantes + ' h' : 'Encerrado') + '</b><small>Deadline: ' + esc(c.prazo) + '</small></div>' +
+          '<div class="p360-kpi-box"><span>Valor baseline estimado</span><b>' + fmtMoedaCurta(c.valorEstimado) + '</b><small>' + c.itens.length + ' itens na requisição</small></div>' +
+        '</div>' +
+        '<div class="p360-card">' +
+          '<div class="p360-card-header"><div class="p360-card-title">Condições comerciais solicitadas</div><button type="button" class="p360-btn primary" data-aba-cot="mapa-comparativo">Abrir Mapa comparativo</button></div>' +
+          '<p style="color:var(--text-secondary);margin-bottom:16px">' + esc(c.descricao) + '</p>' +
+          '<div class="p360-kv-grid">' +
+            '<div class="p360-kv"><span>Condição de pagamento</span><b>' + esc(c.condicoesSolicitadas.pagamentoPadrao) + '</b></div>' +
+            '<div class="p360-kv"><span>Frete preferencial</span><b>' + esc(c.condicoesSolicitadas.tipoFretePreferencial) + '</b></div>' +
+            '<div class="p360-kv"><span>Local de entrega</span><b>' + esc(c.condicoesSolicitadas.localEntrega) + '</b></div>' +
+            '<div class="p360-kv"><span>Impostos</span><b>' + esc(c.condicoesSolicitadas.impostosRegra) + '</b></div>' +
+          '</div>' +
+        '</div>'
+    }
+    return (
+      '<div class="p360-page-header">' +
+        '<div>' +
+          '<div class="p360-breadcrumb"><button type="button" data-nav="cotacoes">‹ Cotações</button> <span>/</span> <span>' + esc(c.id) + '</span></div>' +
+          '<h1 class="p360-page-title">' + esc(c.titulo) + '</h1>' +
+          '<div class="p360-page-count"><span class="p360-mono">' + esc(c.id) + '</span> · Comprador: ' + esc(c.comprador) + ' · Deadline: ' + esc(c.prazo) + '</div>' +
+        '</div>' +
+        badgeStatusCotacao(c.status) +
+      '</div>' +
+      '<div class="p360-tabs">' +
+        tabs.map(function (t) {
+          return '<button type="button" class="p360-tab ' + (S.abaCotacao === t[0] ? 'active' : '') + '" data-aba-cot="' + t[0] + '">' +
+            esc(t[1]) + (t[2] != null ? ' <span>' + t[2] + '</span>' : '') +
+          '</button>'
+        }).join('') +
+      '</div>' +
+      body
+    )
+  }
+  // ═══════════════════════════════════════════════════════════════════════════════
+  // 6. MAPA COMPARATIVO / EQUALIZAÇÃO LADO A LADO
+  // ═══════════════════════════════════════════════════════════════════════════════
+  function viewMapaComparativo() {
+    var d = S.dados
+    var c = d.cotacoes.find(function (x) { return x.id === S.cotacaoId }) || d.cotacoes[0]
+    return (
+      '<div class="p360-page-header">' +
+        '<div>' +
+          '<div class="p360-breadcrumb">Sourcing</div>' +
+          '<h1 class="p360-page-title">Mapa comparativo e equalização</h1>' +
+          '<div class="p360-page-count">Comparação lado a lado de preços, frete, impostos e homologação</div>' +
+        '</div>' +
+        '<select class="p360-select" id="selCotMapa">' +
+          d.cotacoes.map(function (cot) {
+            return '<option value="' + cot.id + '"' + (cot.id === c.id ? ' selected' : '') + '>' + esc(cot.id) + ' — ' + esc(cot.titulo) + '</option>'
+          }).join('') +
+        '</select>' +
+      '</div>' +
+      renderMatrizComparativa(c)
+    )
+  }
+  function renderMatrizComparativa(c) {
+    if (!c.propostas || !c.propostas.length) {
+      return '<div class="p360-card" style="text-align:center;padding:48px;color:var(--text-muted)">Esta cotação ainda não possui propostas enviadas pelos fornecedores.</div>'
+    }
+    var modo = c.adjudicacao.modo || 'item'
+    var completas = c.propostas.filter(function (p) { return !p.incompleta })
+    var menorGlobal = completas.length
+      ? Math.min.apply(null, completas.map(function (p) { return p.totalEqualizado }))
+      : Math.min.apply(null, c.propostas.map(function (p) { return p.totalEqualizado }))
+    var thForns = c.propostas.map(function (p) {
+      var isWinnerLote = modo === 'lote' && c.adjudicacao.vencedorLoteFornecedorId === p.fornecedorId
+      return '<th style="border-left:1px solid #EEF2F8;min-width:210px;vertical-align:top">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">' +
+          '<b style="font-size:13.5px;color:var(--text-main)">' + esc(p.fornecedorNome) + '</b>' +
+          (p.homologado ? '<span class="p360-badge ok"><i></i>Homologado</span>' : '<span class="p360-badge warn"><i></i>' + esc(p.statusHomologacao) + '</span>') +
+        '</div>' +
+        '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' +
+          (p.docVencido ? '<span class="p360-doc-alert-pill" style="margin:0">⚠ Doc vencido</span>' : '') +
+          (p.incompleta ? '<span class="p360-doc-alert-pill warn" style="margin:0">Parcial</span>' : '') +
+        '</div>' +
+        (modo === 'lote'
+          ? '<div style="margin-top:8px"><button type="button" class="p360-btn sm ' + (isWinnerLote ? 'primary' : '') + '" data-sel-lote="' + p.fornecedorId + '" data-cot="' + c.id + '">' + (isWinnerLote ? '✓ Lote vencedor' : 'Escolher lote') + '</button></div>'
+          : '') +
+      '</th>'
+    }).join('')
+    var rowsItens = c.itens.map(function (it) {
+      var precos = c.propostas
+        .map(function (p) { var x = p.itens.find(function (i) { return i.itemId === it.id }); return x && x.precoUnitario != null ? x.precoUnitario : null })
+        .filter(function (v) { return v != null })
+      var menor = precos.length ? Math.min.apply(null, precos) : null
+      var tds = c.propostas.map(function (p) {
+        var ip = p.itens.find(function (i) { return i.itemId === it.id })
+        if (!ip || ip.precoUnitario == null) {
+          return '<td style="border-left:1px solid #EEF2F8;color:var(--text-muted)">✕ Não cotado</td>'
+        }
+        var isBest = menor != null && ip.precoUnitario === menor
+        var isWin = (modo === 'item' && c.adjudicacao.vencedoresPorItem[it.id] === p.fornecedorId) ||
+          (modo === 'lote' && c.adjudicacao.vencedorLoteFornecedorId === p.fornecedorId)
+        return '<td class="' + (isBest ? 'p360-comp-best ' : '') + (isWin ? 'p360-comp-winner' : '') + '" style="border-left:1px solid #EEF2F8">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center">' +
+            '<b>' + fmtMoeda(ip.precoUnitario) + '/un</b>' +
+            (isBest ? '<span class="p360-badge ok">★ Menor preço</span>' : '') +
+          '</div>' +
+          '<div class="p360-cell-sub">Total: <b>' + fmtMoeda(ip.precoTotal) + '</b> · Entrega ' + ip.prazoEntregaDias + 'd</div>' +
+          (modo === 'item'
+            ? '<div style="margin-top:8px"><button type="button" class="p360-btn sm ' + (isWin ? 'primary' : '') + '" data-sel-item="' + it.id + '" data-forn="' + p.fornecedorId + '" data-cot="' + c.id + '">' + (isWin ? '✓ Selecionado' : 'Selecionar item') + '</button></div>'
+            : '') +
+        '</td>'
+      }).join('')
+      return '<tr>' +
+        '<td><div class="p360-cell-title">' + esc(it.descricao) + '</div><div class="p360-cell-sub"><span class="p360-mono">' + esc(it.codigo) + '</span> · ' + it.quantidade + ' ' + esc(it.unidade) + ' · Ref: ' + fmtMoeda(it.precoReferenciaUnit) + '/un</div></td>' +
+        tds +
+      '</tr>'
+    }).join('')
+    return (
+      '<div class="p360-table-card">' +
+        '<div class="p360-filters-bar" style="justify-content:space-between">' +
+          '<div style="display:flex;align-items:center;gap:8px">' +
+            '<span style="font-size:13px;font-weight:600;color:var(--text-secondary)">Decisão de compra:</span>' +
+            '<button type="button" class="p360-btn sm ' + (modo === 'item' ? 'primary' : '') + '" data-modo-adj="item" data-cot="' + c.id + '">Por item</button>' +
+            '<button type="button" class="p360-btn sm ' + (modo === 'lote' ? 'primary' : '') + '" data-modo-adj="lote" data-cot="' + c.id + '">Por lote global</button>' +
+          '</div>' +
+          '<button type="button" class="p360-btn primary" id="btnAdjudicarCot" data-cot="' + c.id + '">✓ Confirmar decisão da cotação</button>' +
+        '</div>' +
+        '<div class="p360-table-wrap">' +
+          '<table class="p360-table">' +
+            '<thead><tr><th>Item / Condição comercial</th>' + thForns + '</tr></thead>' +
+            '<tbody>' +
+              rowsItens +
+              '<tr><td><b>Frete e modalidade</b></td>' + c.propostas.map(function (p) { return '<td style="border-left:1px solid #EEF2F8">' + esc(p.tipoFrete) + (p.valorFreteTotal > 0 ? ' (+' + fmtMoeda(p.valorFreteTotal) + ')' : '') + '</td>' }).join('') + '</tr>' +
+              '<tr><td><b>Condição de pagamento</b></td>' + c.propostas.map(function (p) { return '<td style="border-left:1px solid #EEF2F8"><b>' + esc(p.condicaoPagamento) + '</b></td>' }).join('') + '</tr>' +
+              '<tr><td><b>Prazo médio de entrega</b></td>' + c.propostas.map(function (p) { return '<td style="border-left:1px solid #EEF2F8">' + p.prazoEntregaMedioDias + ' dias</td>' }).join('') + '</tr>' +
+              '<tr><td><b>Validade da proposta</b></td>' + c.propostas.map(function (p) { return '<td style="border-left:1px solid #EEF2F8">' + esc(p.validadeProposta) + '</td>' }).join('') + '</tr>' +
+              '<tr style="background:#F8FAFC"><td><b>Total equalizado da proposta</b></td>' +
+                c.propostas.map(function (p) {
+                  var isMenor = !p.incompleta && p.totalEqualizado === menorGlobal
+                  return '<td style="border-left:1px solid #EEF2F8"><b style="font-size:16px">' + fmtMoeda(p.totalEqualizado) + '</b> ' + (isMenor ? '<span class="p360-badge ok">★ Menor global</span>' : '') + '</td>'
+                }).join('') +
+              '</tr>' +
+            '</tbody>' +
+          '</table>' +
+        '</div>' +
+      '</div>'
+    )
+  }
+  // ═══════════════════════════════════════════════════════════════════════════════
+  // 7. INDICADORES (HOMOLOGAÇÃO E SOURCING)
+  // ═══════════════════════════════════════════════════════════════════════════════
+  function viewIndicadores() {
+    var d = S.dados
+    var k = d.kpis
+    return (
+      '<div class="p360-page-header">' +
+        '<div>' +
+          '<div class="p360-breadcrumb">Analytics</div>' +
+          '<h1 class="p360-page-title">Indicadores</h1>' +
+          '<div class="p360-page-count">Métricas operacionais de fornecedores, SLA de homologação e sourcing</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="p360-kpi-row">' +
+        '<div class="p360-kpi-box"><span>Fornecedores ativos</span><b>' + k.fornecedoresAtivos + '</b><small>' + String(k.pctHomologados).replace('.', ',') + '% da base homologada</small></div>' +
+        '<div class="p360-kpi-box"><span>Tempo médio de homologação</span><b>3,4 dias</b><small>86,5% dentro do SLA corporativo</small></div>' +
+        '<div class="p360-kpi-box"><span>Taxa média de resposta RFQ</span><b>78,6%</b><small>Tempo médio de ciclo: 6,2 dias</small></div>' +
+        '<div class="p360-kpi-box"><span>Economia identificada (Demonstração)</span><b>R$ 44,6k</b><small>-7,4% sobre baseline validado</small></div>' +
+      '</div>' +
+      '<div class="p360-table-card">' +
+        '<div class="p360-filters-bar"><div class="p360-card-title" style="font-size:15px">Desempenho e SLA por categoria de compras</div></div>' +
+        '<div class="p360-table-wrap">' +
+          '<table class="p360-table">' +
+            '<thead><tr><th>Categoria</th><th>Subcategorias</th><th>SLA meta</th><th>Tempo médio real</th><th>Fornecedores ativos</th><th>Situação SLA</th></tr></thead>' +
+            '<tbody>' +
+              d.categorias.map(function (c, idx) {
+                var fornCount = c.subcategorias.reduce(function (a, s) { return a + s.fornecedoresAtivos }, 0)
+                var real = (c.slaHomologacaoDias - 0.5 + (idx % 2) * 0.3).toFixed(1).replace('.', ',')
+                return '<tr>' +
+                  '<td><b>' + esc(c.nome) + '</b></td>' +
+                  '<td>' + c.subcategorias.length + ' subcategorias</td>' +
+                  '<td>' + c.slaHomologacaoDias + ' dias</td>' +
+                  '<td><b>' + real + ' dias</b></td>' +
+                  '<td>' + fornCount + ' fornecedores</td>' +
+                  '<td><span class="p360-badge ok"><i></i>Dentro do SLA</span></td>' +
+                '</tr>'
+              }).join('') +
+            '</tbody>' +
+          '</table>' +
+        '</div>' +
+      '</div>'
+    )
+  }
+  // ═══════════════════════════════════════════════════════════════════════════════
+  // 8. CONFIGURAÇÕES (INVESTIDAS, CATEGORIAS, TIPOS DE DOCUMENTO, REGRAS, USUÁRIOS)
+  // ═══════════════════════════════════════════════════════════════════════════════
+  function viewInvestidas() {
+    var d = S.dados
+    return (
+      '<div class="p360-page-header">' +
+        '<div>' +
+          '<div class="p360-breadcrumb">Configurações</div>' +
+          '<h1 class="p360-page-title">Investidas</h1>' +
+          '<div class="p360-page-count">' + d.investidas.length + ' investidas</div>' +
+        '</div>' +
+        '<button type="button" class="p360-btn primary" data-modal-cfg="investida">+ Nova investida</button>' +
+      '</div>' +
+      '<div class="p360-table-card">' +
+        '<div class="p360-table-wrap">' +
+          '<table class="p360-table">' +
+            '<thead><tr><th>Razão social</th><th>Nome fantasia</th><th>Situação</th><th>Cadastro</th><th class="right">Filiais</th></tr></thead>' +
+            '<tbody>' +
+              d.investidas.map(function (i) {
+                return '<tr>' +
+                  '<td><b>' + esc(i.razaoSocial) + '</b></td>' +
+                  '<td style="color:var(--text-secondary)">' + esc(i.nomeFantasia) + '</td>' +
+                  '<td><span class="p360-badge ok"><i></i>' + esc(i.situacao) + '</span></td>' +
+                  '<td style="color:var(--text-secondary)">' + esc(i.cadastro) + '</td>' +
+                  '<td class="right"><b>' + i.filiais + ' ' + (i.filiais === 1 ? 'filial' : 'filiais') + '</b></td>' +
+                '</tr>'
+              }).join('') +
+            '</tbody>' +
+          '</table>' +
+        '</div>' +
+      '</div>'
+    )
+  }
+  function viewCategorias() {
+    var d = S.dados
+    var rows = ''
+    d.categorias.forEach(function (c) {
+      rows += '<tr>' +
+        '<td><div class="p360-cell-title">' + esc(c.nome) + '</div><div class="p360-cell-sub">' + c.subcategorias.length + ' subcategorias</div></td>' +
+        '<td class="right"><span class="p360-badge ok"><i></i>Ativa</span></td>' +
+      '</tr>'
+      c.subcategorias.forEach(function (s) {
+        rows += '<tr>' +
+          '<td style="padding-left:42px"><div class="p360-cell-title" style="font-weight:500">― &nbsp;' + esc(s.nome) + '</div><div class="p360-cell-sub" style="padding-left:20px">sem subcategorias · ' + s.fornecedoresAtivos + ' fornecedor(es)</div></td>' +
+          '<td class="right"><span class="p360-badge ok"><i></i>Ativa</span></td>' +
+        '</tr>'
+      })
+    })
+    return (
+      '<div class="p360-page-header">' +
+        '<div>' +
+          '<div class="p360-breadcrumb">Configurações</div>' +
+          '<h1 class="p360-page-title">Categorias</h1>' +
+          '<div class="p360-page-count">' + d.categorias.length + ' categorias principais</div>' +
+        '</div>' +
+        '<button type="button" class="p360-btn primary" data-modal-cfg="categoria">+ Nova categoria</button>' +
+      '</div>' +
+      '<div class="p360-table-card"><div class="p360-table-wrap"><table class="p360-table"><tbody>' + rows + '</tbody></table></div></div>'
+    )
+  }
+  function viewTiposDocumento() {
+    var d = S.dados
+    return (
+      '<div class="p360-page-header">' +
+        '<div>' +
+          '<div class="p360-breadcrumb">Configurações</div>' +
+          '<h1 class="p360-page-title">Tipos de documento</h1>' +
+          '<div class="p360-page-count">' + d.tiposDocumento.length + ' tipos</div>' +
+        '</div>' +
+        '<button type="button" class="p360-btn primary" data-modal-cfg="documento">+ Novo tipo</button>' +
+      '</div>' +
+      '<div class="p360-table-card">' +
+        '<div class="p360-table-wrap">' +
+          '<table class="p360-table">' +
+            '<thead><tr><th>Documento</th><th>Validade padrão</th><th>Exigência</th><th>Categorias</th><th>Situação</th></tr></thead>' +
+            '<tbody>' +
+              d.tiposDocumento.map(function (td) {
+                return '<tr>' +
+                  '<td><div class="p360-cell-title">' + esc(td.nome) + '</div><div class="p360-cell-sub">' + esc(td.descricao) + '</div></td>' +
+                  '<td style="color:var(--text-secondary)">' + (td.validadeDias ? td.validadeDias + ' dias' : 'Sem validade') + '</td>' +
+                  '<td><span class="p360-badge ' + (td.obrigatorio ? 'info' : 'neutral') + '">' + (td.obrigatorio ? 'Obrigatório' : 'Opcional') + '</span></td>' +
+                  '<td style="color:var(--text-secondary)">' + esc(td.categoriasAplicaveis.join(', ')) + '</td>' +
+                  '<td><span class="p360-badge ok"><i></i>Ativo</span></td>' +
+                '</tr>'
+              }).join('') +
+            '</tbody>' +
+          '</table>' +
+        '</div>' +
+      '</div>'
+    )
+  }
+  function viewRegrasHomologacao() {
+    var d = S.dados
+    return (
+      '<div class="p360-page-header">' +
+        '<div>' +
+          '<div class="p360-breadcrumb">Configurações</div>' +
+          '<h1 class="p360-page-title">Regras de homologação</h1>' +
+          '<div class="p360-page-count">' + d.regrasHomologacao.length + ' regras parametrizadas</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="p360-table-card">' +
+        '<div class="p360-table-wrap">' +
+          '<table class="p360-table">' +
+            '<thead><tr><th>Código</th><th>Regra</th><th>Escopo</th><th>Parâmetro</th><th>Situação</th></tr></thead>' +
+            '<tbody>' +
+              d.regrasHomologacao.map(function (r) {
+                return '<tr>' +
+                  '<td class="p360-mono">' + esc(r.codigo) + '</td>' +
+                  '<td><div class="p360-cell-title">' + esc(r.titulo) + '</div><div class="p360-cell-sub">' + esc(r.descricao) + '</div></td>' +
+                  '<td>' + esc(r.escopo) + '</td>' +
+                  '<td><b>' + esc(r.valorParametro) + '</b></td>' +
+                  '<td><span class="p360-badge ' + (r.ativa ? 'ok' : 'neutral') + '"><i></i>' + (r.ativa ? 'Ativa' : 'Inativa') + '</span></td>' +
+                '</tr>'
+              }).join('') +
+            '</tbody>' +
+          '</table>' +
+        '</div>' +
+      '</div>'
+    )
+  }
+  function viewUsuarios() {
+    var d = S.dados
+    return (
+      '<div class="p360-page-header">' +
+        '<div>' +
+          '<div class="p360-breadcrumb">Configurações</div>' +
+          '<h1 class="p360-page-title">Usuários</h1>' +
+          '<div class="p360-page-count">' + d.usuarios.length + ' usuários</div>' +
+        '</div>' +
+        '<button type="button" class="p360-btn primary" data-modal-cfg="usuario">+ Novo usuário</button>' +
+      '</div>' +
+      '<div class="p360-table-card">' +
+        '<div class="p360-table-wrap">' +
+          '<table class="p360-table">' +
+            '<thead><tr><th>Usuário</th><th>Papel</th><th>Investidas</th><th>Situação</th><th>Último acesso</th></tr></thead>' +
+            '<tbody>' +
+              d.usuarios.map(function (u) {
+                return '<tr>' +
+                  '<td><div class="p360-cell-title">' + esc(u.nome) + '</div><div class="p360-cell-sub">' + esc(u.email) + '</div></td>' +
+                  '<td>' + esc(u.papel) + '</td>' +
+                  '<td><span class="p360-badge info">' + (u.investidas.length >= 6 ? 'Todas' : esc(u.investidas.join(', '))) + '</span></td>' +
+                  '<td><span class="p360-badge ok"><i></i>' + esc(u.situacao) + '</span></td>' +
+                  '<td style="color:var(--text-secondary)">' + esc(u.ultimoAcesso) + '</td>' +
+                '</tr>'
+              }).join('') +
+            '</tbody>' +
+          '</table>' +
+        '</div>' +
+      '</div>'
+    )
+  }
+  // ═══════════════════════════════════════════════════════════════════════════════
+  // MODAIS (CONVIDAR FORNECEDOR E PORTAL DO FORNECEDOR)
+  // ═══════════════════════════════════════════════════════════════════════════════
+  function abrirModalConvidar() {
+    var d = S.dados
+    $('modalRoot').innerHTML =
+      '<div class="p360-backdrop" id="modalBg">' +
+        '<div class="p360-modal" role="dialog">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center">' +
+            '<h3 style="font-size:18px;font-weight:700">Convidar fornecedor</h3>' +
+            '<button type="button" class="p360-btn sm" id="btnCloseModal">✕</button>' +
+          '</div>' +
+          '<div class="p360-form-grid">' +
+            '<label class="p360-label">Razão social *<input class="p360-input" id="mRazao" placeholder="Ex.: SulFrio Equipamentos Ltda."></label>' +
+            '<label class="p360-label">Nome fantasia<input class="p360-input" id="mFantasia" placeholder="SulFrio"></label>' +
+            '<label class="p360-label">CNPJ *<input class="p360-input" id="mCnpj" placeholder="00.000.000/0001-00"></label>' +
+            '<label class="p360-label">E-mail do fornecedor *<input class="p360-input" id="mEmail" placeholder="comercial@empresa.com.br"></label>' +
+            '<label class="p360-label">Categoria *<select class="p360-select" id="mCat">' +
+              d.categorias.map(function (c) { return '<option value="' + esc(c.nome) + '">' + esc(c.nome) + '</option>' }).join('') +
+            '</select></label>' +
+            '<label class="p360-label">Investida alvo<select class="p360-select" id="mInv">' +
+              d.investidas.map(function (i) { return '<option value="' + i.sigla + '">' + esc(i.nomeFantasia) + '</option>' }).join('') +
+            '</select></label>' +
+          '</div>' +
+          '<div style="display:flex;justify-content:flex-end;gap:8px;margin-top:8px">' +
+            '<button type="button" class="p360-btn" id="btnCancelModal">Cancelar</button>' +
+            '<button type="button" class="p360-btn primary" id="btnSendInvite">Enviar convite</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    $('btnCloseModal').onclick = function () { $('modalRoot').innerHTML = '' }
+    $('btnCancelModal').onclick = function () { $('modalRoot').innerHTML = '' }
+    $('btnSendInvite').onclick = async function () {
+      var razao = $('mRazao').value.trim()
+      var cnpj = $('mCnpj').value.trim()
+      var email = $('mEmail').value.trim()
+      if (!razao || !cnpj || !email) { toast('Preencha Razão social, CNPJ e E-mail.'); return }
+      var r = await api('/api/fornecedores/convidar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          razaoSocial: razao,
+          nomeFantasia: $('mFantasia').value.trim() || razao,
+          cnpj: cnpj,
+          email: email,
+          contatoNome: 'Comercial',
+          categoria: $('mCat').value,
+          subcategoria: 'Geral',
+          cidade: 'São Paulo',
+          uf: 'SP',
+          investidasAlvo: [$('mInv').value]
+        })
+      })
+      $('modalRoot').innerHTML = ''
+      await carregar(true)
+      toast('Fornecedor convidado com sucesso.')
+      S.tela = 'base'
+      S.subTela = 'fornecedor'
+      S.fornecedorId = r.fornecedor.id
+      render()
+    }
+  }
+  function abrirModalPortalPreview() {
+    var f = S.dados.fornecedores.find(function (x) { return x.id === S.fornecedorId }) || S.dados.fornecedores[0]
+    $('modalRoot').innerHTML =
+      '<div class="p360-backdrop" id="modalBg">' +
+        '<div class="p360-modal wide" role="dialog">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center">' +
+            '<div>' +
+              '<span class="p360-badge info">Visão Externa · Portal do Fornecedor</span>' +
+              '<h3 style="font-size:18px;font-weight:700;margin-top:6px">' + esc(f.razaoSocial) + '</h3>' +
+            '</div>' +
+            '<button type="button" class="p360-btn sm" id="btnCloseModal">✕</button>' +
+          '</div>' +
+          '<p style="color:var(--text-secondary)">Ambiente autenticado por token (<code class="p360-mono">' + esc(f.portalToken) + '</code>) preparado para o fornecedor enviar certidões, corrigir pendências de homologação e responder cotações (RFQs).</p>' +
+          '<div class="p360-table-wrap">' +
+            '<table class="p360-table">' +
+              '<thead><tr><th>Documento solicitado</th><th>Validade</th><th>Status</th><th class="right">Autosserviço do fornecedor</th></tr></thead>' +
+              '<tbody>' +
+                f.documentos.map(function (doc) {
+                  return '<tr>' +
+                    '<td><b>' + esc(doc.tipoNome) + '</b></td>' +
+                    '<td>' + esc(doc.validade) + '</td>' +
+                    '<td>' + badgeStatusDoc(doc.status) + '</td>' +
+                    '<td class="right"><button type="button" class="p360-btn sm" data-doc-act="simular_reenvio" data-forn="' + f.id + '" data-doc="' + doc.id + '">Enviar novo PDF</button></td>' +
+                  '</tr>'
+                }).join('') +
+              '</tbody>' +
+            '</table>' +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    $('btnCloseModal').onclick = function () { $('modalRoot').innerHTML = '' }
+  }
+  // ═══════════════════════════════════════════════════════════════════════════════
+  // EVENTOS INTERATIVOS
+  // ═══════════════════════════════════════════════════════════════════════════════
+  document.addEventListener('click', async function (e) {
+    var t = e.target
+    if (!t || !t.closest) return
+    var navBtn = t.closest('[data-nav]')
+    if (navBtn) {
+      e.preventDefault()
+      S.tela = navBtn.dataset.nav
+      S.subTela = null
+      render()
+      return
+    }
+    var subBtn = t.closest('[data-open-sub]')
+    if (subBtn) {
+      S.subTela = subBtn.dataset.openSub
+      S.wizard.etapa = 1
+      render()
+      return
+    }
+    var fornRow = t.closest('[data-open-forn]')
+    if (fornRow && !t.closest('[data-doc-act]')) {
+      S.fornecedorId = fornRow.dataset.openForn
+      S.subTela = 'fornecedor'
+      S.abaFornecedor = 'visao-geral'
+      render()
+      return
+    }
+    var abaForn = t.closest('[data-aba-forn]')
+    if (abaForn) {
+      S.abaFornecedor = abaForn.dataset.abaForn
+      render()
+      return
+    }
+    var homRow = t.closest('[data-open-hom]')
+    if (homRow) {
+      S.homologacaoId = homRow.dataset.openHom
+      S.subTela = 'homologacao'
+      render()
+      return
+    }
+    var abaHom = t.closest('[data-aba-hom]')
+    if (abaHom) {
+      S.abaHomologacao = abaHom.dataset.abaHom
+      render()
+      return
+    }
+    var cotRow = t.closest('[data-open-cot]')
+    if (cotRow) {
+      S.cotacaoId = cotRow.dataset.openCot
+      S.subTela = 'cotacao'
+      S.abaCotacao = 'visao-geral'
+      render()
+      return
+    }
+    var abaCot = t.closest('[data-aba-cot]')
+    if (abaCot) {
+      S.abaCotacao = abaCot.dataset.abaCot
+      render()
+      return
+    }
+    var alertaBtn = t.closest('[data-alerta-mod]')
+    if (alertaBtn) {
+      var mod = alertaBtn.dataset.alertaMod
+      var id = alertaBtn.dataset.alertaId
+      if (mod === 'fornecedor') { S.fornecedorId = id; S.subTela = 'fornecedor'; S.abaFornecedor = 'documentos' }
+      else if (mod === 'homologacao') { S.homologacaoId = id; S.subTela = 'homologacao' }
+      else if (mod === 'cotacao') { S.cotacaoId = id; S.subTela = 'cotacao'; S.abaCotacao = 'visao-geral' }
+      render()
+      return
+    }
+    if (t.closest('#btnConvidarFornecedor')) {
+      abrirModalConvidar()
+      return
+    }
+    if (t.closest('#btnPortalTop')) {
+      abrirModalPortalPreview()
+      return
+    }
+    var docAct = t.closest('[data-doc-act]')
+    if (docAct) {
+      await api('/api/documentos/avaliar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fornecedorId: docAct.dataset.forn,
+          docId: docAct.dataset.doc,
+          acao: docAct.dataset.docAct
+        })
+      })
+      $('modalRoot').innerHTML = ''
+      await carregar(true)
+      toast('Status do documento atualizado.')
+      return
+    }
+    var decHom = t.closest('[data-decidir-hom]')
+    if (decHom) {
+      var parecer = $('txtParecerHom') ? $('txtParecerHom').value : ''
+      await api('/api/homologacoes/decidir', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          homologacaoId: decHom.dataset.decidirHom,
+          decisao: decHom.dataset.decisao,
+          parecer: parecer
+        })
+      })
+      await carregar(true)
+      toast('Decisão da homologação registrada.')
+      return
+    }
+    var modoAdj = t.closest('[data-modo-adj]')
+    if (modoAdj) {
+      var cotM = S.dados.cotacoes.find(function (x) { return x.id === modoAdj.dataset.cot })
+      if (cotM) { cotM.adjudicacao.modo = modoAdj.dataset.modoAdj; render() }
+      return
+    }
+    var selItem = t.closest('[data-sel-item]')
+    if (selItem) {
+      var cotI = S.dados.cotacoes.find(function (x) { return x.id === selItem.dataset.cot })
+      if (cotI) {
+        cotI.adjudicacao.modo = 'item'
+        cotI.adjudicacao.vencedoresPorItem[selItem.dataset.selItem] = selItem.dataset.forn
+        render()
+        toast('Fornecedor vencedor selecionado para o item.')
+      }
+      return
+    }
+    var selLote = t.closest('[data-sel-lote]')
+    if (selLote) {
+      var cotL = S.dados.cotacoes.find(function (x) { return x.id === selLote.dataset.cot })
+      if (cotL) {
+        cotL.adjudicacao.modo = 'lote'
+        cotL.adjudicacao.vencedorLoteFornecedorId = selLote.dataset.selLote
+        render()
+        toast('Fornecedor selecionado para o lote global.')
+      }
+      return
+    }
+    if (t.closest('#btnAdjudicarCot')) {
+      var cid = t.closest('#btnAdjudicarCot').dataset.cot
+      var cotA = S.dados.cotacoes.find(function (x) { return x.id === cid })
+      await api('/api/cotacoes/adjudicar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cotacaoId: cotA.id,
+          modo: cotA.adjudicacao.modo,
+          vencedorLoteFornecedorId: cotA.adjudicacao.vencedorLoteFornecedorId,
+          vencedoresPorItem: cotA.adjudicacao.vencedoresPorItem,
+          justificativaDecisao: 'Adjudicado via Mapa Comparativo.',
+          encerrarCotacao: true
+        })
+      })
+      await carregar(true)
+      toast('Cotação adjudicada e encerrada.')
+      return
+    }
+    var wzStep = t.closest('[data-wz-step]')
+    if (wzStep) { salvarCamposWizard(); S.wizard.etapa = Number(wzStep.dataset.wzStep); render(); return }
+    if (t.closest('#btnWzPrev')) { salvarCamposWizard(); S.wizard.etapa = Math.max(1, S.wizard.etapa - 1); render(); return }
+    if (t.closest('#btnWzNext')) { salvarCamposWizard(); S.wizard.etapa = Math.min(5, S.wizard.etapa + 1); render(); return }
+    if (t.closest('#btnWzAddItem')) {
+      var dItem = $('wzNovoItemDesc') ? $('wzNovoItemDesc').value.trim() : ''
+      if (!dItem) { toast('Informe a descrição do item.'); return }
+      S.wizard.itens.push({
+        codigo: 'INS-5' + (10 + S.wizard.itens.length),
+        descricao: dItem,
+        quantidade: Number($('wzNovoItemQtd').value) || 100,
+        unidade: 'UN',
+        especificacao: 'Padrão Plurix',
+        precoReferenciaUnit: Number($('wzNovoItemPreco').value) || 40
+      })
+      render()
+      return
+    }
+    if (t.closest('#btnWzSubmit')) {
+      salvarCamposWizard()
+      var w = S.wizard
+      var nova = await api('/api/cotacoes/criar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          titulo: w.titulo || 'Embalagens e filme stretch 1T27',
+          descricao: w.descricao || 'Reposição trimestral para lojas',
+          categoria: w.categoria,
+          subcategoria: w.subcategoria,
+          investida: w.investida,
+          comprador: w.comprador,
+          prazo: w.prazo,
+          condicoesSolicitadas: {
+            pagamentoPadrao: w.pagamentoPadrao,
+            tipoFretePreferencial: w.tipoFretePreferencial,
+            localEntrega: w.localEntrega,
+            impostosRegra: w.impostosRegra,
+            validadeMinimaDias: w.validadeMinimaDias,
+            observacoesGerais: w.observacoesGerais
+          },
+          itens: w.itens,
+          fornecedorIds: w.fornecedorIds
+        })
+      })
+      await carregar(true)
+      toast('Cotação ' + nova.id + ' enviada aos fornecedores.')
+      S.cotacaoId = nova.id
+      S.subTela = 'cotacao'
+      render()
+    }
+  })
+  function salvarCamposWizard() {
+    var w = S.wizard
+    if ($('wzTit')) w.titulo = $('wzTit').value
+    if ($('wzCat')) w.categoria = $('wzCat').value
+    if ($('wzInv')) w.investida = $('wzInv').value
+    if ($('wzComp')) w.comprador = $('wzComp').value
+    if ($('wzPrazo')) w.prazo = $('wzPrazo').value
+    if ($('wzLocal')) w.localEntrega = $('wzLocal').value
+    if ($('wzDesc')) w.descricao = $('wzDesc').value
+    if ($('wzPag')) w.pagamentoPadrao = $('wzPag').value
+    if ($('wzFrete')) w.tipoFretePreferencial = $('wzFrete').value
+    if ($('wzImp')) w.impostosRegra = $('wzImp').value
+    if ($('wzVal')) w.validadeMinimaDias = Number($('wzVal').value) || 30
+  }
+  document.addEventListener('change', function (e) {
+    var t = e.target
+    if (!t) return
+    if (t.id === 'selInvestidaGlobal') { S.investida = t.value; carregar(true) }
+    else if (t.id === 'fBaseCat') { S.fBase.categoria = t.value; render() }
+    else if (t.id === 'fBaseUf') { S.fBase.uf = t.value; render() }
+    else if (t.id === 'fBaseSit') { S.fBase.situacao = t.value; render() }
+    else if (t.id === 'fBaseBloq') { S.fBase.bloqueio = t.value; render() }
+    else if (t.id === 'fBaseInvEleg') { S.fBase.investidaElegivel = t.value; render() }
+    else if (t.id === 'fHomInv') { S.fHom.investida = t.value; render() }
+    else if (t.id === 'fHomCat') { S.fHom.categoria = t.value; render() }
+    else if (t.id === 'fHomResp') { S.fHom.responsavel = t.value; render() }
+    else if (t.id === 'fCotCat') { S.fCot.categoria = t.value; render() }
+    else if (t.id === 'fCotSt') { S.fCot.status = t.value; render() }
+    else if (t.id === 'selCotMapa') { S.cotacaoId = t.value; render() }
+    else if (t.dataset && t.dataset.wzForn) {
+      var id = t.dataset.wzForn
+      var idx = S.wizard.fornecedorIds.indexOf(id)
+      if (t.checked && idx < 0) S.wizard.fornecedorIds.push(id)
+      if (!t.checked && idx >= 0) S.wizard.fornecedorIds.splice(idx, 1)
+    }
+  })
+  document.addEventListener('input', function (e) {
+    var t = e.target
+    if (!t) return
+    if (t.id === 'inpBuscaGlobal') {
+      S.buscaGlobal = t.value
+      if (S.tela === 'inicio' && t.value.trim().length >= 2) { S.tela = 'base'; S.subTela = null }
+      render()
+    } else if (t.id === 'fBaseBusca') {
+      S.fBase.busca = t.value
+      render()
+      var el = $('fBaseBusca'); if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length) }
+    } else if (t.id === 'fHomBusca') {
+      S.fHom.busca = t.value
+      render()
+      var el2 = $('fHomBusca'); if (el2) { el2.focus(); el2.setSelectionRange(el2.value.length, el2.value.length) }
+    } else if (t.id === 'fCotBusca') {
+      S.fCot.busca = t.value
+      render()
+      var el3 = $('fCotBusca'); if (el3) { el3.focus(); el3.setSelectionRange(el3.value.length, el3.value.length) }
+    }
+  })
+  carregar(false)
+})()
+</script>
+</body>
+</html>
