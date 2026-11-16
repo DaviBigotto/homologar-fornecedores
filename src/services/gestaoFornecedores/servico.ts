@@ -11,7 +11,24 @@ import {
   type TipoDocumento,
   type UsuarioPlataforma,
 } from './dados.js'
+import {
+  carregarEstadoDoNeon,
+  salvarFornecedorNoNeon,
+  salvarHomologacaoNoNeon,
+  salvarCotacaoNoNeon,
+} from '../../db/neonService.js'
+
 const banco: EstadoBancoFornecedores = structuredClone(SEMENTE_GESTAO_FORNECEDORES)
+
+// Inicializar hidratação do Neon se DATABASE_URL estiver configurado
+if (process.env.DATABASE_URL) {
+  carregarEstadoDoNeon().then(dadosNeon => {
+    if (dadosNeon && dadosNeon.fornecedores.length > 0) {
+      Object.assign(banco, dadosNeon)
+      console.log(`✅ Base de dados Plurix sincronizada com Neon PostgreSQL (${dadosNeon.fornecedores.length} fornecedores).`)
+    }
+  }).catch(() => {})
+}
 function agoraPtBr(): string {
   return new Date().toLocaleString('pt-BR', {
     day: '2-digit',
@@ -280,6 +297,8 @@ export function convidarFornecedor(dados: {
     ],
   }
   banco.homologacoes.unshift(novaHomolog)
+  salvarFornecedorNoNeon(novoFornecedor).catch(() => {})
+  salvarHomologacaoNoNeon(novaHomolog).catch(() => {})
   return { fornecedor: novoFornecedor, homologacao: novaHomolog }
 }
 export function avaliarDocumentoFornecedor(dados: {
@@ -356,7 +375,9 @@ export function avaliarDocumentoFornecedor(dados: {
     }
     hom.pendenciasAbertas = hom.checklist.filter(c => c.status === 'bad' || c.status === 'pendente').length
     hom.ultimaAtualizacao = agoraPtBr()
+    salvarHomologacaoNoNeon(hom).catch(() => {})
   }
+  salvarFornecedorNoNeon(forn).catch(() => {})
   return forn
 }
 export function decidirHomologacao(dados: {
@@ -438,7 +459,9 @@ export function decidirHomologacao(dados: {
       detalhe: dados.parecer || hom.observacoesAnalista,
       usuario: dados.usuario || 'Fernanda Ribeiro',
     })
+    salvarFornecedorNoNeon(forn).catch(() => {})
   }
+  salvarHomologacaoNoNeon(hom).catch(() => {})
   return { homologacao: hom, fornecedor: forn }
 }
 export function criarNovaCotacao(dados: {
@@ -514,6 +537,7 @@ export function criarNovaCotacao(dados: {
     ],
   }
   banco.cotacoes.unshift(nova)
+  salvarCotacaoNoNeon(nova).catch(() => {})
   return nova
 }
 export function adjudicarCotacao(dados: {
@@ -551,6 +575,7 @@ export function adjudicarCotacao(dados: {
     detalhe: dados.justificativaDecisao || 'Seleção de vencedor atualizada no Mapa Comparativo.',
     usuario: dados.usuario || 'Davi Bigotto',
   })
+  salvarCotacaoNoNeon(cot).catch(() => {})
   return cot
 }
 export function salvarConfiguracao(dados: {

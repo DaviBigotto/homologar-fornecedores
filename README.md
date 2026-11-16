@@ -50,3 +50,4 @@ O projeto já conta com [vercel.json](file:///vercel.json) configurado para Serv
 1. Conecte este repositório no dashboard da [Vercel](https://vercel.com).
 2. O framework preset é detectado automaticamente ou selecione **Other**.
 3. Clique em **Deploy**.
+
