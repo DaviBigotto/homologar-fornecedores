@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "node --watch --watch-path=./src --import=tsx ./src/server.ts",
     "start": "node --import=tsx ./src/server.ts",
-    "build": "npx esbuild api/index.ts --bundle --platform=node --format=esm --outfile=api/index.js --external:express",
+    "build": "tsc --noEmit",
     "typecheck": "tsc --noEmit",
     "test": "node --import=tsx --test test/**/*.test.ts"
   },
