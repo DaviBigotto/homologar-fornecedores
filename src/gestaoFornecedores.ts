@@ -11,6 +11,7 @@ import {
   adjudicarCotacao,
   salvarConfiguracao,
 } from './services/gestaoFornecedores/servico.js'
+import { SEMENTE_GESTAO_FORNECEDORES } from './services/gestaoFornecedores/dados.js'
 
 export interface OpcoesRouterFornecedores {
   getUser?: (req: express.Request) => string | null
@@ -28,11 +29,100 @@ function resolverCaminhoHtml(): string {
   return candidatos[1]
 }
 
+function resolverCaminhoLoginHtml(): string {
+  const candidatos = [
+    path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'views/pages/login.html'),
+    path.resolve(process.cwd(), 'src/views/pages/login.html'),
+    path.resolve(process.cwd(), 'public/login.html'),
+  ]
+  for (const c of candidatos) {
+    if (fs.existsSync(c)) return c
+  }
+  return candidatos[2]
+}
+
 export function createGestaoFornecedoresRouter(opcoes: OpcoesRouterFornecedores = {}): express.Router {
   const router = express.Router()
   router.use(express.json({ limit: '5mb' }))
 
   const caminhoHtml = resolverCaminhoHtml()
+  const caminhoLoginHtml = resolverCaminhoLoginHtml()
+
+  router.get('/login', (_req, res) => {
+    const html = fs.readFileSync(caminhoLoginHtml, 'utf-8')
+    res.setHeader('Content-Type', 'text/html; charset=utf-8')
+    res.send(html)
+  })
+
+  router.get('/inicio', (_req, res) => {
+    res.redirect('/')
+  })
+
+  router.post('/api/auth/login', (req, res) => {
+    try {
+      const { email } = req.body || {}
+      if (!email) {
+        res.status(400).json({ success: false, error: 'E-mail corporativo obrigatório.' })
+        return
+      }
+      const emailLimpo = String(email).trim().toLowerCase()
+      const usuarioEncontrado = SEMENTE_GESTAO_FORNECEDORES.usuarios.find(
+        (u) => u.email.toLowerCase() === emailLimpo
+      )
+
+      if (usuarioEncontrado) {
+        res.json({
+          success: true,
+          user: {
+            id: usuarioEncontrado.id,
+            nome: usuarioEncontrado.nome,
+            email: usuarioEncontrado.email,
+            papel: usuarioEncontrado.papel,
+            investidas: usuarioEncontrado.investidas,
+            ultimoAcesso: usuarioEncontrado.ultimoAcesso,
+          },
+          token: `plx-tok-${Date.now()}-${usuarioEncontrado.id}`,
+        })
+        return
+      }
+
+      if (emailLimpo.endsWith('@plurix.com.br')) {
+        const nomeFormatado = emailLimpo
+          .split('@')[0]
+          .split('.')
+          .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+          .join(' ')
+        res.json({
+          success: true,
+          user: {
+            id: `usr-${Date.now().toString().slice(-4)}`,
+            nome: nomeFormatado || 'Colaborador Plurix',
+            email: emailLimpo,
+            papel: 'Comprador',
+            investidas: ['PLX', 'AMG', 'BOA', 'AVE', 'PRN', 'SPO', 'JPY'],
+            ultimoAcesso: 'Hoje',
+          },
+          token: `plx-tok-${Date.now()}`,
+        })
+        return
+      }
+
+      res.status(401).json({
+        success: false,
+        error: 'E-mail corporativo não reconhecido. Utilize seu e-mail @plurix.com.br ou selecione um usuário abaixo.',
+      })
+    } catch {
+      res.status(500).json({ success: false, error: 'Erro ao validar credenciais.' })
+    }
+  })
+
+  router.get('/api/auth/usuarios', (_req, res) => {
+    res.json({ success: true, usuarios: SEMENTE_GESTAO_FORNECEDORES.usuarios })
+  })
+
+  router.post('/api/auth/logout', (_req, res) => {
+    res.json({ success: true, message: 'Sessão encerrada com sucesso.' })
+  })
 
   router.get('/', (_req, res) => {
     const html = fs.readFileSync(caminhoHtml, 'utf-8')

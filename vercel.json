@@ -14,6 +14,14 @@
       "destination": "/$1"
     },
     {
+      "source": "/login",
+      "destination": "/login.html"
+    },
+    {
+      "source": "/inicio",
+      "destination": "/index.html"
+    },
+    {
       "source": "/gestao-fornecedores",
       "destination": "/index.html"
     },

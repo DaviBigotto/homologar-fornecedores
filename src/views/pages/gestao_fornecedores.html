@@ -1349,11 +1349,14 @@ button, input, select, textarea {
           Portal do Fornecedor
         </button>
         <div class="p360-user-pill">
-          <span class="p360-avatar">A</span>
+          <span class="p360-avatar" id="topUserAvatar">D</span>
           <div class="p360-user-info">
-            <b>Administrador</b>
-            <span>Administrador</span>
+            <b id="topUserName">Davi Bigotto</b>
+            <span id="topUserRole">Administrador</span>
           </div>
+          <button type="button" id="btnTopLogout" title="Sair da plataforma" style="margin-left:6px;padding:3px 8px;font-size:11px;font-weight:600;color:var(--text-muted);border:1px solid var(--border-light);border-radius:6px;background:#F8FAFC;cursor:pointer;">
+            Sair
+          </button>
         </div>
       </div>
     </header>
@@ -1371,6 +1374,34 @@ button, input, select, textarea {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
     })
+  }
+
+  // Verificação de autenticação corporativa
+  var usuarioAtual = null
+  try {
+    var rawUser = localStorage.getItem('plurix_user')
+    if (!rawUser) {
+      var cb = encodeURIComponent(window.location.pathname + window.location.search)
+      window.location.href = '/login?callbackUrl=' + cb
+      return
+    }
+    usuarioAtual = JSON.parse(rawUser)
+  } catch (_) {
+    window.location.href = '/login'
+    return
+  }
+
+  if (usuarioAtual) {
+    if ($('topUserName')) $('topUserName').textContent = usuarioAtual.nome || 'Colaborador'
+    if ($('topUserRole')) $('topUserRole').textContent = usuarioAtual.papel || 'Plurix'
+    if ($('topUserAvatar')) $('topUserAvatar').textContent = (usuarioAtual.nome || 'U').charAt(0).toUpperCase()
+  }
+  if ($('btnTopLogout')) {
+    $('btnTopLogout').onclick = function () {
+      localStorage.removeItem('plurix_user')
+      document.cookie = 'plurix_user=; path=/; max-age=0'
+      window.location.href = '/login?logout=true'
+    }
   }
   var BASE = location.pathname.replace(/\/+$/, '')
   if (!BASE || BASE === '') BASE = '/gestao-fornecedores'

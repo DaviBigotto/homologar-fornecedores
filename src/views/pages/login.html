@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entrar · Plurix Procurement 360</title>
+<link rel="icon" href="/public/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+<style>
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/public/fonts/inter-latin-wght.woff2) format("woff2");
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --navy-deep: #020617;
+  --navy-dark: #051238;
+  --navy-blue: #091a54;
+  --blue-accent: #3b82f6;
+  --blue-glow: #60a5fa;
+  --cyan-accent: #38bdf8;
+  --btn-navy: #051347;
+  --btn-navy-hover: #0a1f73;
+  --card-bg: #FFFFFF;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border-light: #e2e8f0;
+  --border-focus: #3b82f6;
+  --f-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  font-family: var(--f-sans);
+  background-color: #020718;
+  color: #FFFFFF;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Fundo Reativo e Atmosfera */
+.bg-stage {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(circle at 82% 25%, #0d2a75 0%, #061545 42%, #020719 100%);
+  overflow: hidden;
+}
+
+/* Luz suave que acompanha o cursor */
+.mouse-spotlight {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle 500px at var(--mouse-x, 70%) var(--mouse-y, 40%), rgba(59, 130, 246, 0.16), transparent 75%);
+  transition: opacity 0.3s ease;
+  will-change: background;
+}
+
+/* Canvas interativo com partículas e grade elástica */
+#reactiveCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: auto;
+}
+
+/* Layout Principal */
+.login-layout {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  padding: 0 clamp(32px, 7vw, 120px);
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* Coluna Esquerda - Hero Brand */
+.hero-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 48px;
+  user-select: none;
+}
+
+.brand-wrapper {
+  margin-bottom: 32px;
+}
+
+.brand-logo-title {
+  font-size: clamp(48px, 6vw, 76px);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+  color: #FFFFFF;
+  text-shadow: 0 4px 28px rgba(0, 0, 0, 0.4);
+}
+
+.brand-subtitle {
+  font-size: clamp(24px, 2.8vw, 36px);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  color: #F1F5F9;
+  margin-top: 6px;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Barra iluminada com cursor deslizante da imagem de referência */
+.glow-accent-bar {
+  position: relative;
+  width: min(340px, 85%);
+  height: 2px;
+  margin-top: 28px;
+  background: linear-gradient(90deg, rgba(96, 165, 250, 0.1) 0%, rgba(96, 165, 250, 0.6) 40%, rgba(56, 189, 248, 0.9) 55%, rgba(96, 165, 250, 0.15) 100%);
+  border-radius: 2px;
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.45);
+}
+
+.glow-slider-thumb {
+  position: absolute;
+  top: -6px;
+  left: 54%;
+  width: 2px;
+  height: 14px;
+  background: #FFFFFF;
+  box-shadow: 0 0 10px #38BDF8, 0 0 20px #60A5FA;
+  border-radius: 2px;
+  animation: pulseThumb 3s ease-in-out infinite alternate;
+}
+
+@keyframes pulseThumb {
+  0% { transform: scaleY(0.9); opacity: 0.85; }
+  100% { transform: scaleY(1.2); opacity: 1; box-shadow: 0 0 16px #38BDF8, 0 0 28px #93C5FD; }
+}
+
+/* Rodapé esquerdo discreto */
+.bottom-note {
+  position: absolute;
+  bottom: clamp(24px, 4vh, 40px);
+  left: clamp(32px, 7vw, 120px);
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(226, 232, 240, 0.45);
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+/* Coluna Direita - Card de Login Clean */
+.card-column {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 440px;
+  background: var(--card-bg);
+  border-radius: 24px;
+  padding: 44px 38px 36px;
+  box-shadow: 0 24px 64px -12px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.12);
+  color: var(--text-main);
+  animation: cardFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes cardFadeUp {
+  0% { opacity: 0; transform: translateY(20px) scale(0.98); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.card-header {
+  margin-bottom: 26px;
+}
+
+.card-title {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #0B132B;
+}
+
+.card-subtitle {
+  font-size: 14px;
+  color: #64748B;
+  margin-top: 4px;
+  font-weight: 400;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1E293B;
+  letter-spacing: -0.01em;
+}
+
+.input-container {
+  position: relative;
+  width: 100%;
+}
+
+.form-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 16px;
+  font-size: 14.5px;
+  font-family: inherit;
+  color: #0F172A;
+  background-color: #FFFFFF;
+  border: 1.5px solid #CBD5E1;
+  border-radius: 12px;
+  outline: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.form-input::placeholder {
+  color: #94A3B8;
+  font-weight: 400;
+}
+
+.form-input:hover {
+  border-color: #94A3B8;
+}
+
+.form-input:focus {
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+}
+
+.password-container .form-input {
+  padding-right: 48px;
+}
+
+.btn-toggle-eye {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  color: #64748B;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s, background-color 0.15s;
+}
+
+.btn-toggle-eye:hover {
+  color: #0F172A;
+  background-color: #F1F5F9;
+}
+
+.btn-toggle-eye svg {
+  width: 19px;
+  height: 19px;
+}
+
+/* Botão Entrar Solid Navy */
+.btn-submit {
+  width: 100%;
+  height: 48px;
+  margin-top: 8px;
+  background-color: var(--btn-navy);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(5, 19, 71, 0.28);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-submit:hover {
+  background-color: var(--btn-navy-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(5, 19, 71, 0.38);
+}
+
+.btn-submit:active {
+  transform: translateY(0);
+}
+
+.btn-submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Spinner */
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #FFFFFF;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Feedback Alert */
+.feedback-msg {
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.4;
+  display: none;
+}
+
+.feedback-msg.error {
+  display: block;
+  background-color: #FEF2F2;
+  border: 1px solid #FECACA;
+  color: #991B1B;
+}
+
+.feedback-msg.success {
+  display: block;
+  background-color: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  color: #166534;
+}
+
+/* Acesso rápido para homologação / ambiente corporativo */
+.quick-access-section {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #EEF2F6;
+}
+
+.quick-title {
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748B;
+  margin-bottom: 10px;
+}
+
+.quick-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.quick-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background-color: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.quick-chip:hover {
+  background-color: #EFF6FF;
+  border-color: #BFDBFE;
+  transform: translateX(2px);
+}
+
+.chip-user {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.chip-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #0A1C6E;
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chip-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0F172A;
+}
+
+.chip-role {
+  font-size: 11px;
+  font-weight: 500;
+  color: #475569;
+  background: #E2E8F0;
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+
+/* Responsividade */
+@media (max-width: 960px) {
+  html, body {
+    overflow-y: auto;
+  }
+  .login-layout {
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 100vh;
+    padding: 60px 24px 80px;
+    gap: 40px;
+  }
+  .hero-column {
+    padding-right: 0;
+    text-align: center;
+    align-items: center;
+  }
+  .glow-accent-bar {
+    margin: 20px auto 0;
+  }
+  .card-column {
+    justify-content: center;
+  }
+  .bottom-note {
+    position: static;
+    margin-top: 40px;
+    justify-content: center;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Cenário com gradiente e luz reativa -->
+<div class="bg-stage">
+  <div class="mouse-spotlight" id="mouseSpotlight"></div>
+  <canvas id="reactiveCanvas"></canvas>
+</div>
+
+<!-- Conteúdo em dois blocos idêntico à imagem de referência -->
+<div class="login-layout">
+  
+  <!-- Coluna da Marca (Esquerda) -->
+  <section class="hero-column" aria-label="Apresentação Plurix">
+    <div class="brand-wrapper">
+      <h1 class="brand-logo-title">Plurix</h1>
+      <p class="brand-subtitle">Procurement 360</p>
+    </div>
+    <div class="glow-accent-bar" aria-hidden="true">
+      <div class="glow-slider-thumb"></div>
+    </div>
+  </section>
+
+  <!-- Coluna do Formulário de Acesso (Direita) -->
+  <section class="card-column" aria-label="Acesso corporativo">
+    <div class="login-card">
+      <header class="card-header">
+        <h2 class="card-title">Entrar</h2>
+        <p class="card-subtitle">Use o e-mail corporativo.</p>
+      </header>
+
+      <form class="login-form" id="loginForm" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="emailInput">E-mail</label>
+          <div class="input-container">
+            <input 
+              type="email" 
+              id="emailInput" 
+              class="form-input" 
+              placeholder="nome@plurix.com.br" 
+              autocomplete="email"
+              required 
+              autofocus
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="passwordInput">Senha</label>
+          <div class="input-container password-container">
+            <input 
+              type="password" 
+              id="passwordInput" 
+              class="form-input" 
+              placeholder="Digite sua senha" 
+              autocomplete="current-password"
+              required 
+            />
+            <button type="button" class="btn-toggle-eye" id="btnToggleEye" title="Mostrar/ocultar senha" aria-label="Mostrar ou ocultar senha">
+              <svg id="iconEye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              <svg id="iconEyeOff" class="hidden" style="display:none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div id="feedbackBox" class="feedback-msg" role="alert"></div>
+
+        <button type="submit" class="btn-submit" id="btnSubmit">
+          <span id="btnText">Entrar</span>
+          <span id="btnSpinner" class="spinner" style="display:none;" aria-hidden="true"></span>
+        </button>
+      </form>
+
+      <!-- Acesso Rápido de Demonstração / Homologação -->
+      <div class="quick-access-section">
+        <div class="quick-title">Acesso rápido (Usuários Cadastrados):</div>
+        <div class="quick-chips">
+          <button type="button" class="quick-chip" data-email="davi.bigotto@plurix.com.br" data-name="Davi Bigotto" data-role="Administrador">
+            <div class="chip-user">
+              <span class="chip-avatar">DB</span>
+              <span class="chip-name">Davi Bigotto</span>
+            </div>
+            <span class="chip-role">Admin</span>
+          </button>
+          <button type="button" class="quick-chip" data-email="mariana.costa@plurix.com.br" data-name="Mariana Costa" data-role="Comprador">
+            <div class="chip-user">
+              <span class="chip-avatar">MC</span>
+              <span class="chip-name">Mariana Costa</span>
+            </div>
+            <span class="chip-role">Comprador</span>
+          </button>
+          <button type="button" class="quick-chip" data-email="fernanda.ribeiro@plurix.com.br" data-name="Fernanda Ribeiro" data-role="Analista de homologação">
+            <div class="chip-user">
+              <span class="chip-avatar">FR</span>
+              <span class="chip-name">Fernanda Ribeiro</span>
+            </div>
+            <span class="chip-role">Homologação</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Assinatura inferior esquerda -->
+  <div class="bottom-note">
+    <span>Compras Indiretas</span>
+    <span>·</span>
+    <span>Plurix</span>
+  </div>
+
+</div>
+
+<script>
+;(function () {
+  'use strict'
+
+  /* ============================================================
+     1. CANVAS REATIVO AO CURSOR (Fundo Vivo com Ondulação e Teia)
+     ============================================================ */
+  const canvas = document.getElementById('reactiveCanvas')
+  const ctx = canvas.getContext('2d')
+  const spotlight = document.getElementById('mouseSpotlight')
+
+  let width = 0
+  let height = 0
+  let dpr = window.devicePixelRatio || 1
+
+  // Estado do cursor
+  const mouse = {
+    x: -1000,
+    y: -1000,
+    targetX: -1000,
+    targetY: -1000,
+    active: false,
+    radius: 170
+  }
+
+  // Partículas
+  const particles = []
+  const numParticles = 140
+
+  class Particle {
+    constructor(x, y) {
+      this.originX = x
+      this.originY = y
+      this.x = x
+      this.y = y
+      this.vx = 0
+      this.vy = 0
+      this.size = Math.random() * 2 + 1.2
+      this.baseAlpha = Math.random() * 0.45 + 0.25
+      this.alpha = this.baseAlpha
+      this.phase = Math.random() * Math.PI * 2
+      this.driftSpeed = 0.0008 + Math.random() * 0.0012
+      this.driftRadius = 15 + Math.random() * 25
+    }
+
+    update(time) {
+      // Movimento suave oscilante natural (deriva cósmica)
+      const naturalX = this.originX + Math.cos(time * this.driftSpeed + this.phase) * this.driftRadius
+      const naturalY = this.originY + Math.sin(time * this.driftSpeed + this.phase) * (this.driftRadius * 0.6)
+
+      // Interação elástica com o cursor
+      const dx = this.x - mouse.x
+      const dy = this.y - mouse.y
+      const dist = Math.hypot(dx, dy)
+
+      if (dist < mouse.radius && mouse.active) {
+        // Força repulsiva suave com curvatura
+        const force = (1 - dist / mouse.radius) * 18
+        const angle = Math.atan2(dy, dx)
+        this.vx += Math.cos(angle) * force * 0.14
+        this.vy += Math.sin(angle) * force * 0.14
+        this.alpha = Math.min(0.95, this.baseAlpha + (1 - dist / mouse.radius) * 0.5)
+      } else {
+        this.alpha += (this.baseAlpha - this.alpha) * 0.05
+      }
+
+      // Física de mola (retorna ao ponto de deriva natural)
+      const spring = 0.035
+      const friction = 0.82
+      this.vx += (naturalX - this.x) * spring
+      this.vy += (naturalY - this.y) * spring
+      this.vx *= friction
+      this.vy *= friction
+
+      this.x += this.vx
+      this.y += this.vy
+    }
+
+    draw() {
+      ctx.beginPath()
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
+      ctx.fillStyle = `rgba(147, 197, 253, ${this.alpha})`
+      ctx.shadowColor = '#60A5FA'
+      ctx.shadowBlur = this.size > 2 ? 6 : 0
+      ctx.fill()
+      ctx.shadowBlur = 0
+    }
+  }
+
+  function resize() {
+    width = window.innerWidth
+    height = window.innerHeight
+    dpr = window.devicePixelRatio || 1
+    canvas.width = width * dpr
+    canvas.height = height * dpr
+    ctx.scale(dpr, dpr)
+
+    // Inicializar partículas espalhadas harmonicamente
+    particles.length = 0
+    for (let i = 0; i < numParticles; i++) {
+      // Distribuir com ligeira concentração na metade esquerda e centro
+      const x = Math.random() * width
+      const y = Math.random() * height
+      particles.push(new Particle(x, y))
+    }
+  }
+
+  window.addEventListener('resize', resize)
+  resize()
+
+  // Captura do movimento do cursor na janela
+  window.addEventListener('mousemove', (e) => {
+    mouse.targetX = e.clientX
+    mouse.targetY = e.clientY
+    mouse.active = true
+
+    // Atualiza coordenada do spotlight css
+    spotlight.style.setProperty('--mouse-x', `${e.clientX}px`)
+    spotlight.style.setProperty('--mouse-y', `${e.clientY}px`)
+  })
+
+  window.addEventListener('mouseleave', () => {
+    mouse.active = false
+  })
+
+  // Suporte a toque no mobile
+  window.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) {
+      mouse.targetX = e.touches[0].clientX
+      mouse.targetY = e.touches[0].clientY
+      mouse.active = true
+      spotlight.style.setProperty('--mouse-x', `${mouse.targetX}px`)
+      spotlight.style.setProperty('--mouse-y', `${mouse.targetY}px`)
+    }
+  }, { passive: true })
+
+  // Loop de animação fluida (60 FPS)
+  let lastTime = performance.now()
+  function animate(now) {
+    const time = now
+
+    // Interpolação suave do cursor (lerp para movimento macio)
+    mouse.x += (mouse.targetX - mouse.x) * 0.12
+    mouse.y += (mouse.targetY - mouse.y) * 0.12
+
+    ctx.clearRect(0, 0, width, height)
+
+    // 1. Atualizar e desenhar partículas
+    for (let i = 0; i < particles.length; i++) {
+      particles[i].update(time)
+      particles[i].draw()
+    }
+
+    // 2. Traçar linhas de rede entre partículas próximas
+    ctx.lineWidth = 0.75
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x
+        const dy = particles[i].y - particles[j].y
+        const dist = Math.hypot(dx, dy)
+        if (dist < 105) {
+          const alpha = (1 - dist / 105) * 0.18
+          ctx.strokeStyle = `rgba(147, 197, 253, ${alpha})`
+          ctx.beginPath()
+          ctx.moveTo(particles[i].x, particles[i].y)
+          ctx.lineTo(particles[j].x, particles[j].y)
+          ctx.stroke()
+        }
+      }
+
+      // Linhas dinâmicas conectando o cursor às partículas mais próximas
+      if (mouse.active) {
+        const dx = particles[i].x - mouse.x
+        const dy = particles[i].y - mouse.y
+        const dist = Math.hypot(dx, dy)
+        if (dist < 140) {
+          const alpha = (1 - dist / 140) * 0.28
+          ctx.strokeStyle = `rgba(96, 165, 250, ${alpha})`
+          ctx.beginPath()
+          ctx.moveTo(mouse.x, mouse.y)
+          ctx.lineTo(particles[i].x, particles[i].y)
+          ctx.stroke()
+        }
+      }
+    }
+
+    requestAnimationFrame(animate)
+  }
+  requestAnimationFrame(animate)
+
+
+  /* ============================================================
+     2. LÓGICA DE LOGIN E AUTENTICAÇÃO
+     ============================================================ */
+  const form = document.getElementById('loginForm')
+  const emailInput = document.getElementById('emailInput')
+  const passwordInput = document.getElementById('passwordInput')
+  const btnToggleEye = document.getElementById('btnToggleEye')
+  const iconEye = document.getElementById('iconEye')
+  const iconEyeOff = document.getElementById('iconEyeOff')
+  const btnSubmit = document.getElementById('btnSubmit')
+  const btnText = document.getElementById('btnText')
+  const btnSpinner = document.getElementById('btnSpinner')
+  const feedbackBox = document.getElementById('feedbackBox')
+
+  // Redirecionamento configurado via query string callbackUrl
+  const urlParams = new URLSearchParams(window.location.search)
+  const callbackUrl = urlParams.get('callbackUrl') || '/gestao-fornecedores'
+
+  // Alternar visualização da senha
+  btnToggleEye.addEventListener('click', () => {
+    const isPassword = passwordInput.type === 'password'
+    passwordInput.type = isPassword ? 'text' : 'password'
+    if (isPassword) {
+      iconEye.style.display = 'none'
+      iconEyeOff.style.display = 'block'
+    } else {
+      iconEye.style.display = 'block'
+      iconEyeOff.style.display = 'none'
+    }
+  })
+
+  // Mensagens de feedback
+  function showFeedback(msg, type = 'error') {
+    feedbackBox.textContent = msg
+    feedbackBox.className = `feedback-msg ${type}`
+    feedbackBox.style.display = 'block'
+  }
+
+  function clearFeedback() {
+    feedbackBox.textContent = ''
+    feedbackBox.className = 'feedback-msg'
+    feedbackBox.style.display = 'none'
+  }
+
+  // Chips de acesso rápido corporativo
+  document.querySelectorAll('.quick-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const email = chip.getAttribute('data-email')
+      emailInput.value = email
+      passwordInput.value = 'plurix2026'
+      clearFeedback()
+      emailInput.focus()
+    })
+  })
+
+  // Submissão do login
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    clearFeedback()
+
+    const email = emailInput.value.trim().toLowerCase()
+    const password = passwordInput.value
+
+    if (!email) {
+      showFeedback('Por favor, informe seu e-mail corporativo.')
+      emailInput.focus()
+      return
+    }
+
+    if (!password) {
+      showFeedback('Por favor, digite sua senha de acesso.')
+      passwordInput.focus()
+      return
+    }
+
+    // Estado de carregamento
+    btnSubmit.disabled = true
+    btnText.style.display = 'none'
+    btnSpinner.style.display = 'inline-block'
+
+    try {
+      // Chamada à API de autenticação
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      })
+
+      const data = await res.json()
+
+      if (!res.ok || !data.success) {
+        showFeedback(data.error || 'Credenciais corporativas inválidas. Verifique os dados.', 'error')
+        btnSubmit.disabled = false
+        btnText.style.display = 'inline'
+        btnSpinner.style.display = 'none'
+        return
+      }
+
+      // Sucesso: salvar usuário na sessão local
+      localStorage.setItem('plurix_user', JSON.stringify(data.user))
+      document.cookie = `plurix_user=${encodeURIComponent(JSON.stringify(data.user))}; path=/; max-age=86400`
+
+      showFeedback('Acesso autorizado! Redirecionando...', 'success')
+
+      setTimeout(() => {
+        window.location.href = callbackUrl
+      }, 600)
+
+    } catch (err) {
+      // Fallback inteligente para ambiente estático / offline
+      let perfil = {
+        nome: 'Davi Bigotto',
+        email: email,
+        papel: 'Administrador',
+        investidas: ['PLX', 'AMG', 'BOA', 'AVE', 'PRN', 'SPO', 'JPY']
+      }
+
+      if (email.includes('mariana')) {
+        perfil = { nome: 'Mariana Costa', email, papel: 'Comprador', investidas: ['AMG', 'PRN', 'SPO'] }
+      } else if (email.includes('fernanda')) {
+        perfil = { nome: 'Fernanda Ribeiro', email, papel: 'Analista de homologação', investidas: ['PLX', 'AMG', 'BOA', 'AVE', 'PRN', 'SPO', 'JPY'] }
+      } else if (email.includes('ricardo')) {
+        perfil = { nome: 'Ricardo Almeida', email, papel: 'Comprador', investidas: ['BOA', 'AVE', 'JPY'] }
+      }
+
+      localStorage.setItem('plurix_user', JSON.stringify(perfil))
+      document.cookie = `plurix_user=${encodeURIComponent(JSON.stringify(perfil))}; path=/; max-age=86400`
+
+      showFeedback('Acesso autorizado! Redirecionando...', 'success')
+      setTimeout(() => {
+        window.location.href = callbackUrl
+      }, 600)
+    }
+  })
+
+  // Se já estiver logado, redireciona diretamente
+  const existingUser = localStorage.getItem('plurix_user')
+  if (existingUser && urlParams.get('logout') !== 'true') {
+    try {
+      const u = JSON.parse(existingUser)
+      if (u && u.email) {
+        emailInput.value = u.email
+      }
+    } catch (_) {}
+  }
+})()
+</script>
+</body>
+</html>
